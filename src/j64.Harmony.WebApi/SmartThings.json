@@ -1,0 +1,19 @@
+{
+  "clientKey": "73db471b-7408-491e-8dc7-fcf2ca86d9c8",
+  "secretKey": "b0a3bdfe-3111-4d3d-a8b8-a895a2c52b79",
+  "authCode": "9IxpQ2",
+  "accessToken": "006ba70c-3452-48ef-9bea-bb9847cba8bd",
+  "tokenType": "bearer",
+  "expiresInSeconds": 1575319176,
+  "endpoints": [
+    {
+      "oauthClient": {
+        "clientId": "73db471b-7408-491e-8dc7-fcf2ca86d9c8",
+        "clientSecret": "b0a3bdfe-3111-4d3d-a8b8-a895a2c52b79"
+      },
+      "uri": "https://graph.api.smartthings.com:443/api/smartapps/installations/5ba45164-7fec-4eff-8633-3c1af30f6336",
+      "base_url": "https://graph.api.smartthings.com:443",
+      "url": "/api/smartapps/installations/5ba45164-7fec-4eff-8633-3c1af30f6336"
+    }
+  ]
+}

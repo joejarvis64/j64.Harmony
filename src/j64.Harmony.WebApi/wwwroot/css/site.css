@@ -27,8 +27,16 @@ textarea {
         line-height: 1.4;
     }
 
+.j64Img {
+    margin-left: 15px;
+}
+
 @media (min-width: 768px) {
     .carousel-caption {
         z-index: 10 !important;
+    }
+
+    .j64Img {
+        margin-left: 0px;
     }
 }
