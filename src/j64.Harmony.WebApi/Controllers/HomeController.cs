@@ -127,5 +127,11 @@ namespace j64.Harmony.WebApi.Controllers
             SmartThingsRepository.InstallDevices(this.Request.Host.Value);
             return View("Index", hubConfig);
         }
+
+        public IActionResult SyncSmartThings2()
+        {
+            SmartThingsRepository.InstallDevices2(this.Request.Host.Value);
+            return View("Index", hubConfig);
+        }
     }
 }

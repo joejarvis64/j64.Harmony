@@ -61,5 +61,32 @@ namespace j64.Harmony.WebApi.Models
             {
             }
         }
+        
+        /// <summary>
+        /// Install or Update Devices in the SmartThings App
+        /// </summary>
+        public static void InstallDevices2(string hostString)
+        {
+            try
+            {
+                var url = "http://192.168.1.105:39500";
+                var client = new System.Net.Http.HttpClient();
+
+                System.Net.Http.HttpRequestMessage msg = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Post, url);
+
+                var json = @"{'Email': 'james@example.com','Active': true,'CreatedDate': '2013-01-20T00:00:00Z','Roles': ['User','Admin'] }";
+                msg.Content = new System.Net.Http.FormUrlEncodedContent(json);
+                var response = client.SendAsync(msg);
+
+                response.Wait();
+
+                if (response.Result.StatusCode != System.Net.HttpStatusCode.Created)
+                {
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 }

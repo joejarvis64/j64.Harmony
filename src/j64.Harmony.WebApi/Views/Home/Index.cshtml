@@ -40,6 +40,8 @@
 </style>
 <form class="form" asp-controller="Home" asp-action="SaveChanges" method="post">
     <br />
+    <a class="btn btn-primary btn-xs" asp-action="SyncSmartThings2"><i class="fa fa-cloud-upload"></i>&nbsp;Sync with SmartThings-Test</a>
+    
     @if (!String.IsNullOrEmpty(Model.ChannelDevice) && !String.IsNullOrEmpty(Model.VolumeDevice))
     {
         <div class="panel panel-default">
