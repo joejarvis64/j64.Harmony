@@ -9,13 +9,6 @@ using j64.Harmony.WebApi.ViewModels.Config;
 
 namespace j64.Harmony.WebApi.Controllers
 {
-    public class MyResponse<T>
-    {
-        public string FromHost { get; set; }
-        public string Route { get; set; }
-        public T Response { get; set; }
-    }
-
     [Route("api/[controller]")]
     public class HarmonyHubController : Controller
     {
@@ -28,28 +21,6 @@ namespace j64.Harmony.WebApi.Controllers
         {
             this.hubConfig = hubConfig;
             myHub = hub;
-        }
-
-        // GET: api/HarmonyController
-        [HttpGet]
-        public IActionResult GetHarmonyConfig()
-        {
-            List<j64Device> l = new List<j64Device>();
-
-            l.Add(new j64Device() { Name = hubConfig.SoundDeviceName, DeviceValue = null, DeviceType = j64DeviceType.Volume });
-            l.Add(new j64Device() { Name = hubConfig.ChannelSurfDeviceName, DeviceValue = null, DeviceType = j64DeviceType.Surfing });
-            l.Add(new j64Device() { Name = hubConfig.VcrPauseDeviceName, DeviceValue = "pause", DeviceType = j64DeviceType.VCR});
-
-            foreach (var fc in hubConfig.FavoriteChannels)
-                l.Add(new j64Device() { Name = fc.Name, DeviceValue = fc.Channel, DeviceType = j64DeviceType.Channel });
-            l.Add(new j64Device() { Name = hubConfig.LastChannelDeviceName, DeviceValue = "previous", DeviceType = j64DeviceType.Channel });
-
-            return new ObjectResult(new MyResponse<List<j64Device>>()
-            {
-                FromHost = Request.Host.Value,
-                Route = Request.Path.Value,
-                Response = l
-            });
         }
 
         [HttpGet("ToggleMute")]

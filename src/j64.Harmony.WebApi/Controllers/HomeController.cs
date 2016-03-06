@@ -87,7 +87,8 @@ namespace j64.Harmony.WebApi.Controllers
         public IActionResult SaveChanges(HarmonyHubConfiguration hc)
         {
             hubConfig.Email = hc.Email;
-            hubConfig.Password = hc.Password;
+            if (!String.IsNullOrEmpty(hc.Password))
+                hubConfig.Password = hc.Password;
             hubConfig.HubAddress = hc.HubAddress;
             hubConfig.HubPort = hc.HubPort;
             hubConfig.ChannelDevice = hc.ChannelDevice;
@@ -97,40 +98,67 @@ namespace j64.Harmony.WebApi.Controllers
             hubConfig.ChanneKeyPauseInterval = hc.ChanneKeyPauseInterval;
             hubConfig.LastChannelDeviceName = hc.LastChannelDeviceName;
             hubConfig.VcrPauseDeviceName = hc.VcrPauseDeviceName;
+            hubConfig.STHubAddress = hc.STHubAddress;
+            hubConfig.STHubPort = hc.STHubPort;
 
-            hubConfig.FavoriteChannels.Clear();
-            for (int i = 0; i < Request.Form["fc.Name"].Count; i++)
+            if (Request.Form["fc.Name"].Count > 0)
             {
-                string name = Request.Form["fc.Name"][i];
-                hubConfig.FavoriteChannels.Add(new FavoriteChannel()
+                hubConfig.FavoriteChannels.Clear();
+                for (int i = 0; i < Request.Form["fc.Name"].Count; i++)
                 {
-                    Name = Request.Form["fc.Name"][i],
-                    Channel = Request.Form["fc.Channel"][i]
-                });
+                    string name = Request.Form["fc.Name"][i];
+                    hubConfig.FavoriteChannels.Add(new FavoriteChannel()
+                    {
+                        Name = Request.Form["fc.Name"][i],
+                        Channel = Request.Form["fc.Channel"][i]
+                    });
+                }
             }
-
-            // We always have to update the device list on the Hub Configuration after we get the config info
-            hubConfig.DeviceList.Clear();
-            myHub.hubConfig.device.ForEach(x => hubConfig.DeviceList.Add(new Microsoft.AspNet.Mvc.Rendering.SelectListItem() { Text = x.label }));
-
-            // Save the new data
-            HarmonyHubConfiguration.Save(hubConfig);
 
             // Refresh the connection
             myHub.StartNewConnection(hc.Email, hc.Password, hc.HubAddress, hc.HubPort);
+
+            // We always have to update the device list on the Hub Configuration after we get the config info
+            hubConfig.DeviceList.Clear();
+            myHub.hubConfig?.device.ForEach(x => hubConfig.DeviceList.Add(new Microsoft.AspNet.Mvc.Rendering.SelectListItem() { Text = x.label }));
+
+            // Set a default to get the ball rolling
+            if (String.IsNullOrEmpty(hubConfig.ChannelDevice))
+            {
+                hubConfig.ChannelDevice = myHub.hubConfig.device?[0].label;
+                hubConfig.VolumeDevice = myHub.hubConfig.device?[0].label;
+            }
+
+            // Save the new data
+            HarmonyHubConfiguration.Save(hubConfig);
 
             return View("Index", hubConfig);
         }
 
         public IActionResult SyncSmartThings()
         {
-            SmartThingsRepository.InstallDevices(this.Request.Host.Value);
+            SmartThingsRepository.InstallDevices(hubConfig);
             return View("Index", hubConfig);
         }
 
-        public IActionResult SyncSmartThings2()
+        public IActionResult Findj64Address()
         {
-            SmartThingsRepository.InstallDevices2(this.Request.Host.Value);
+            string[] h = this.Request.Host.Value.Split(':');
+            if (h.Length > 1)
+                hubConfig.j64Port = Convert.ToInt32(h[1]);
+
+            var hostName = System.Net.Dns.GetHostEntryAsync(System.Net.Dns.GetHostName());
+            hostName.Wait();
+            foreach (var i in hostName.Result.AddressList)
+            {
+                if (i.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    hubConfig.j64Address = i.ToString();
+                    break;
+                }
+            }
+            HarmonyHubConfiguration.Save(hubConfig);
+
             return View("Index", hubConfig);
         }
     }

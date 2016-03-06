@@ -7,13 +7,17 @@ using j64.Harmony.WebApi.Models;
 using Newtonsoft.Json;
 using System.IO;
 using Microsoft.AspNet.Authorization;
+using j64.Harmony.WebApi.ViewModels.Config;
 
 namespace j64.Harmony.WebApi.Controllers
 {
     public class OAuthController : Controller
     {
-        public OAuthController()
+        HarmonyHubConfiguration hubConfig;
+
+        public OAuthController(HarmonyHubConfiguration hubConfig)
         {
+            this.hubConfig = hubConfig;
         }
 
         public IActionResult Index()
@@ -98,8 +102,13 @@ namespace j64.Harmony.WebApi.Controllers
 
             OauthRepository.Save(oai);
 
-            // Install the Zones
-            SmartThingsRepository.InstallDevices(this.Request.Host.Value);
+            // Prepare the smart app to be called from the local traffic
+            SmartThingsRepository.PrepTheInstall(hubConfig);
+
+            // Send all of the default devices to the smart app
+            SmartThingsRepository.InstallDevices(hubConfig);
+
+            // all done!
             return View(oai);
 
         }

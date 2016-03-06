@@ -19,7 +19,6 @@ namespace j64.Harmony.WebApi.Models
         public string tokenType { get; set; }
         public int expiresInSeconds { get; set; }
 
-
         // this is returned from the third step where we get the endpoint info
         public List<OauthEndpoint> endpoints { get; set; }
     }

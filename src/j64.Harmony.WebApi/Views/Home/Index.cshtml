@@ -40,8 +40,6 @@
 </style>
 <form class="form" asp-controller="Home" asp-action="SaveChanges" method="post">
     <br />
-    <a class="btn btn-primary btn-xs" asp-action="SyncSmartThings2"><i class="fa fa-cloud-upload"></i>&nbsp;Sync with SmartThings-Test</a>
-    
     @if (!String.IsNullOrEmpty(Model.ChannelDevice) && !String.IsNullOrEmpty(Model.VolumeDevice))
     {
         <div class="panel panel-default">
@@ -102,6 +100,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="3">
+                                <div class="myNotes">** Scroll down if you want to change which devices is used to control sound and volume</div>
                                 <div class="myNotes">** Scroll down if you want to change the sound and channel surf devices names</div>
                                 <div class="myNotes">** Volume only moves up/down by 2 button presses. It is not a true % of your TV volume</div>
                                 <div class="myNotes">** You can say any % you want to turn the sound up/down</div>
@@ -117,32 +116,31 @@
                             <th><b>To set this channel</b></th>
                             <th><b>Try&nbsp;it</b></th>
                         </tr>
+                        <tr>
+                            <th class="sayThis">Alexa, turn on <input asp-for="LastChannelDeviceName" style='width: 9em' /></th>
+                            <th class="toDoThis"><input readonly="readonly" style='display:none;width: 5em' value="previous" /></th>
+                            <th class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="Previous"><i class="fa fa-hand-o-left fa-fw"></i></a></th>
+                        </tr>
                     </thead>
                     @foreach (var fc in Model.FavoriteChannels)
                     {
                         <tr>
-                            <td class="sayThis">Alexa, turn on&nbsp;&nbsp;<input asp-for="@fc.Name" style='width: 11em' /></td>
+                            <td class="sayThis">Alexa, turn on <input asp-for="@fc.Name" style='width: 9em' /></td>
                             <td class="toDoThis"><input asp-for="@fc.Channel" style='width: 5em' type="number" />&nbsp;&nbsp;<a class="btn btn-default btn-xs" asp-action="DeleteChannel" asp-route-channel="@fc.Channel"><i class="fa fa-trash-o fa-fw"></i></a></td>
                             <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="@fc.Channel"><i class="fa fa-hand-o-left fa-fw"></i></a></td>
                         </tr>
                     }
                     <tr>
-                        <td class="sayThis">Alexa, turn on&nbsp;&nbsp;<input asp-for="LastChannelDeviceName" style='width: 11em' /></td>
-                        <td class="toDoThis"><input readonly="readonly" style='width: 5em' value="previous" /></td>
-                        <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="Previous"><i class="fa fa-hand-o-left fa-fw"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a class="btn btn-primary btn-xs" asp-action="AddChannel"><i class="fa fa-plus-circle"></i>&nbsp;Add New Channel</a>
-                            <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Channels</button>
+                        <td colspan="3">
+                            <a class="btn btn-primary btn-sm" asp-action="AddChannel"><i class="fa fa-plus-circle"></i>Add Channel</a>&nbsp;
+                            <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>Save Channels</button>&nbsp;
                         </td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tfoot>
                         <tr>
                             <td colspan="3">
                                 <div class="myNotes">** After modifying the channels you must ask Alexa to discover devices</div>
+                                <div class="myNotes">** If a channel device is not deleted from smart things, check to make sure it is not associated to the Echo app</div>
                             </td>
                         </tr>
                     </tfoot>
@@ -150,40 +148,24 @@
             </div>
         </div>
     }
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Harmony Hub Information
-        </div>
-        <div class="panel-body">
-            <div class="form-group">
-                <label asp-for="Email">Harmony User ID</label>
-                <input asp-for="Email" class="form-control" placeholder="Harmony ID (email)" type="email" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Password">Password</label>
-                <input asp-for="Password" class="form-control" placeholder="Harmony Password" type="password" value="na" />
-            </div>
-            <div class="form-group">
-                <label asp-for="HubAddress">Harmony Address</label>
-                <input asp-for="HubAddress" class="form-control" placeholder="Name or IP of harmony hub" />
-            </div>
-            <div class="form-group">
-                <label asp-for="HubPort">Harmony TCP Port</label>
-                <input asp-for="HubPort" class="form-control" placeholder="TCP Port Harmony is listening on" type="number" />
-            </div>
-            @if (Model.DeviceList.Count > 0)
+    @if (Model.DeviceList.Count > 0)
             {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Select which device controls the channel and volume
+            </div>
+            <div class="panel-body">
                 <div class="form-group">
                     <label asp-for="VolumeDevice">Volume Device</label>
                     <select class="form-control" asp-for="VolumeDevice" asp-items="Model.DeviceList"></select>
                 </div>
                 <div class="form-group">
-                    <label asp-for="ChannelDevice">Channel Device</label>
-                    <select class="form-control" asp-for="ChannelDevice" asp-items="Model.DeviceList"></select>
+                    <label asp-for="SoundDeviceName">Volume Device Name</label>
+                    <input class="form-control" asp-for="SoundDeviceName" />
                 </div>
                 <div class="form-group">
-                    <label asp-for="SoundDeviceName">Sound Device Name</label>
-                    <input class="form-control" asp-for="SoundDeviceName" />
+                    <label asp-for="ChannelDevice">Channel Device</label>
+                    <select class="form-control" asp-for="ChannelDevice" asp-items="Model.DeviceList"></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="ChannelSurfDeviceName">Channel Surfing Device Name</label>
@@ -201,13 +183,77 @@
                     <div class="myNotes">** After modifying the device names you must ask Alexa to discover devices</div>
                     <div class="myNotes">** Wait(ms) is the time between pressing numbers when changing channels</div>
                 </div>
-
-            }
-            <div class="form-group">
-                <button class="btn btn-primary btn-xs" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Hub Information</button>
-                <a class="btn btn-primary btn-xs" asp-action="SyncSmartThings"><i class="fa fa-cloud-upload"></i>&nbsp;Sync with SmartThings</a>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Device Information</button>
+                </div>
             </div>
-
+        </div>
+    }
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Harmony Hub Information
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="Email">Harmony User ID</label>
+                <input asp-for="Email" class="form-control" placeholder="Harmony ID (email)" type="email" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Password</label>
+                <input asp-for="Password" class="form-control" placeholder="Harmony Password" type="password" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HubAddress">Harmony Address</label>
+                <input asp-for="HubAddress" class="form-control" placeholder="Name or IP of harmony hub" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HubPort">Harmony TCP Port</label>
+                <input asp-for="HubPort" class="form-control" placeholder="TCP Port Harmony is listening on" type="number" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Harmony Hub Information</button>
+            </div>
         </div>
     </div>
+    @if (Model.DeviceList.Count > 0)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Smart Things Hub Information
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label asp-for="STHubAddress">SmartThings Hub IP Address</label>
+                    <input asp-for="STHubAddress" class="form-control" placeholder="Name or IP of smartThings hub" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="STHubPort">SmartThings TCP Port</label>
+                    <input asp-for="STHubPort" class="form-control" placeholder="TCP Port SmartThings is listening on" type="number" />
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save SmartThings Hub Information</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                j64 Server Information
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label asp-for="j64Address">j64 IP Address</label>
+                    <input asp-for="j64Address" class="form-control" placeholder="IP of j64 Server" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="j64Port">j64 TCP Port</label>
+                    <input asp-for="j64Port" class="form-control" placeholder="TCP Port SmartThings is listening on" type="number" />
+                </div>
+                <div class="form-group">
+                    <a class="btn btn-primary btn-sm" asp-action="Findj64Address"><i class="fa fa-plus-circle"></i>Determine Server IP</a>&nbsp;
+                    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save j64 Server Information</button>
+                </div>
+            </div>
+        </div>
+    }
 </form>
