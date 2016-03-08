@@ -212,5 +212,6 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 
+.DS_Store
 SmartThings.json
 HarmonyHubConfiguration.json

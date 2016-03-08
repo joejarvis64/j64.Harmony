@@ -1,18 +1,40 @@
 # Pre-Reqs
-You need a mac, windows or linux machine to run this app on.  Additionally you will need a smart things hub and an amazon echo.
+1. A Mac, Windows or Linux machine to run the j64 app on
+2. A working Smart Things Hub
+2. A working Harmony Hub
+3. A working Amazon Echo
+4. Basic understanding of SmartThings devices & smart apps
 
-# Step 1 - Install the Asp.NetCore Framework
+
+# Overview of Steps
+Here are the abbreviated, one liner, list of install steps:
+
+1. Install asp.net framework (http://get.asp.net)
+2. git clone https://github.com/joejarvis64/j64.Harmony.git
+3. dnu restore j64.Harmony.Xmpp 
+4. dnu restore j64.Harmony.WebApi
+5. Install j64*SmartApp.groovy SmartApp into the IDE 
+6. Install j64*Device.groovy Device Types into the IDE 
+7. Run the web app -- cd src/j64.Harmony.WebApi; dnx web
+8. Configure the channels/apps
+  * Harmony id/password
+  * Click install smart app
+  * Add custom channel names via the web app
+  * Discover devices on amazon echo
+
+Start telling Alexa to control the volume and channels!
+
+# Step 1 - Install the Asp.Net Core Framework
 Go to http://get.asp.net and install a copy of the dot net core framework on the machine you will use to run j64HarmonyServer.  It is a pretty easy install process, just click the "Install for Mac" or "Install for Windows" button and run the executable that is downloaded.
 
-If you are installing windows you may need to take a couple of extra steps to get everything running properly.  In my case I had do this:
+If you are installing on a windows machine you may need to take a couple of extra steps to get everything running properly.  In my case I had do this:
 
-1. Goto get.asp.net and click the Asp.Net RC 5 "Install for Windows" button and run the executable that it downloaded
+1. Goto get.asp.net and click the Asp.Net RC 5 "Install for Windows" button and run the executable that it downloads
 2. Reboot windows so the environment will be set properly
-3. After restarting, open a command prompt and run the upgrade command to get the runtime, dnx and dnu installed properly:
+3. After restarting, open a command prompt and run the upgrade command to get the runtime, dnx and dnu utilities installed properly:
 ```
 dnvm upgrade -r coreclr 
 ```
-  
 
 # Step 2 - Download a copy of the j64.Harmony
 I do not have a installer package yet so you will need to download and install it manually.  You will need to be familiar with github to do this.  The easiest way is to clone a copy of the repository into a directory on your machine.  There is also an option to download a zip file from there at which you would just unzip it onto your local machine.  The github repository for j64Harmony is located here: https://github.com/joejarvis64/j64.Harmony.git
@@ -28,13 +50,13 @@ The next page that comes up will have a form to create a new smart app.  You sho
 
  ![New Smart Apps Page](Images/NewSmartApp1.png "New Smart App Page")
 
-That will open up a blank text box.  Copy all of the code from j64HarmonySmartApp.goovy into that text box.  Then click the Create button at the bottom of the page.
+That will open up a blank text box.  Copy all of the code from j64HarmonySmartApp.groovy into that text box.  Then click the Create button at the bottom of the page.
 
 That will bring up the editor for the smart app.  At this point you will want to click the "Publish" button at the top of that page.  This will publish the smart app and make it avaialble for use under your personal ID.
 
  ![New Smart Apps Page](Images/NewSmartApp2.png "Publish Page")
 
-Now that you have published the app you will need to get an Oauth key that will be used down on step #9.  To do this click the "App Settings" button next the the publish button.  That will take you to the following page.  Open up the Oauth Section and click "Enable Oauth in Smart App" button. You will need the Oauth Client ID & Oauth Client Secret down in step #9.  
+Now that you have published the app you will need to get an Oauth key that will be used down on step #9.  To do this click the "App Settings" button next the the publish button.  That will take you to the following page.  Open up the Oauth Section and click "Enable Oauth in Smart App" button. You will need the Oauth Client ID & Oauth Client Secret down in step #8.  
 
 Be sure to click the Update button at the bottom of this page or it will not actually save that Oauth information.
 
@@ -45,7 +67,7 @@ Be sure to click the Update button at the bottom of this page or it will not act
 The process for install custom device types is almost identical to smart apps.  The only difference is that you will select the "Device Handlers" option at the top of the page.  Once there you will click on "Create New Device Handler", then select the "From Code" option.  Finally just like you did for the smart app you will need to publish the device handler once you have created it.
 
 You will want to create custom device handlers for each of the following files:
-* j64ChannelSwitchDevice.goovy
+* j64ChannelSwitchDevice.groovy
 * j64SurfingSwitchDevice.groovy
 * j64VCRSwitchDevice.groovy
 * j64VolumeSwitchDevice.groovy
@@ -53,17 +75,17 @@ You will want to create custom device handlers for each of the following files:
 
 # Step 5 - Build the j64.Harmony app
 
-The exact steps for this build will vary slightly depending on whether you are running on a mac, windows or linux.  The following instructions are for a mac but should also apply for the other envronments. 
+The exact steps for this build will vary slightly depending on whether you are running on a mac, windows or linux.  The following instructions are for a mac but should also apply for the other environments. 
 
 1. Bring up a terminal session and change to the directory where you cloned the respository in step 2 above
 
-2. change to the src directory that contains each of the projects.  There are 3 projects that need to be restored and built.  It should look something like this:
+2. change to the src directory that contains each of the projects.  There are 2 projects that need to be restored and built.  It should look something like this:
  > ![Src Directory](Images/SrcDirectory.png "src directory")
  
 3. Next change to the j64.Harmony.Xmpp directory and restore it with this command:
   > dnu restore
   
-  You will see a bunch of packages being downloaded from github.  This is normal the first time you run and it may take a minute or two to get everything downloaded.
+  You will see a bunch of packages being downloaded from github.  This is normal the first time you run and it may take a minute or two to get everything downloaded.  Repeat this restore command for the j64.Harmony.WebApi folder.
   
 4. Next, build the j64.Harmony.WebApi project
   > dnu build
@@ -91,12 +113,12 @@ Now listening on: http://0.0.0.0:2065
 Application started. Press Ctrl+C to shut down.
 ```
 
-One thing to notice is the line near the bottom that show what port it is listening on.  This line means that it is listening on all of your network interfaces (0.0.0.0) on TCP port 2064.   
+One thing to notice is the line near the bottom that show what port it is listening on.  This line means that it is listening on all of your network interfaces (0.0.0.0) on TCP port 2065.   
 ```
 Now listening on: http://0.0.0.0:2065
 ```
 
-**Important**: if you are on windows and you get a message asking you to allow firewall access be sure to click allow access.  If you say no, the smart things hub will not be able to talk with the j64Harmon web app.
+**Important**: if you are on windows and you get a message asking you to allow firewall access be sure to click allow access.  If you say no, the smart things hub will not be able to talk with the j64Harmony web app.
 
 
 # Step 7 - Open the App
@@ -122,13 +144,13 @@ The SmartThings authorization screen you see will look like this.  Select the hu
  > ![Authorize Smart App](Images/InstallSmartAppScreen2.png "Authorize  Smart App")
  
  
- After you have successfully authorized you are redirected back to the j64Harmony web app.  It should say that you have succesfully authorized the smart app.  At this point, you can bring up your mobile app and you should see the j64 smart app and j64 device types installed.  Again, it will install and name the devices according to the information that you setup on the configure page.
+ After you have successfully authorized you are redirected back to the j64Harmony web app.  It should say that you have succesfully authorized the smart app.  At this point, you can bring up your mobile app and you should see the j64 smart app and j64 device types installed.  Again, it will install and name the devices according to the information that you setup on the home page of the j64 Harmony app.
 
 > ![Authorize Smart App](Images/InstallSmartAppScreen3.png "Authorize  Smart App")
  
  # Step 9 - Test it out
  
- If you have reached this point everything should be ready to go.  Pull up your Smart Things mobile app and you should be able to find the devices in your "Things" section.  Everything is named as you specified on the home page of the j64 Harmony App.  I like to put all of these devices into a seperate room so it is easy to find them.
+ If you have reached this point everything should be ready to go.  Pull up your Smart Things mobile app and you should be able to find the devices in your "Things" section.  Everything is named as you specified on the home page of the j64 Harmony App.  I like to put all of these devices into a room in the mobile app since that makes it easy to find all of the devices.
  
  > ![Mobile App](Images/MobileAppThings.png "Mobile App")
 
