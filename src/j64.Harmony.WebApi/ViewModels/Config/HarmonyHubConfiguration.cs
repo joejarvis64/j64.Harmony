@@ -87,7 +87,7 @@ namespace j64.Harmony.WebApi.ViewModels.Config
 
         public static void Save(HarmonyHubConfiguration hc)
         {
-            using (StreamWriter file = System.IO.File.CreateText("HarmonyHubConfiguration.json"))
+            using (StreamWriter file = System.IO.File.CreateText(HarmonyHubConfigurationFile))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 serializer.Formatting = Formatting.Indented;
