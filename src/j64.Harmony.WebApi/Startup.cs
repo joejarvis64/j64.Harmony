@@ -13,8 +13,6 @@ using j64.Harmony.WebApi.Models;
 using j64.Harmony.WebApi.Services;
 using j64.Harmony.WebApi.ViewModels.Config;
 using j64.Harmony.Xmpp;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace j64.Harmony.WebApi
 {
@@ -29,10 +27,12 @@ namespace j64.Harmony.WebApi
 
             if (env.IsDevelopment())
             {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
             }
 
+            HarmonyHubConfiguration.HarmonyHubConfigurationFile = env.MapPath("HarmonyHubConfiguration.json");
+            OauthRepository.RepositoryFile = env.MapPath("SmartThings.json");
+            
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
         }
@@ -102,7 +102,6 @@ namespace j64.Harmony.WebApi
             {
                 app.UseExceptionHandler("/Home/Error");
 
-                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
                 try
                 {
                     using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
@@ -120,8 +119,6 @@ namespace j64.Harmony.WebApi
             app.UseStaticFiles();
 
             app.UseIdentity();
-
-            // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>
             {

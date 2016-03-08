@@ -60,13 +60,15 @@ namespace j64.Harmony.WebApi.ViewModels.Config
         #endregion
 
         #region Read/Save
+        public static string HarmonyHubConfigurationFile { get; set; } = "HarmonyHubConfiguration.json";
+        
         public static HarmonyHubConfiguration Read()
         {
             HarmonyHubConfiguration hubConfig = new HarmonyHubConfiguration();
 
-            if (File.Exists("HarmonyHubConfiguration.json"))
+            if (File.Exists(HarmonyHubConfigurationFile))
             {
-                using (StreamReader file = System.IO.File.OpenText("HarmonyHubConfiguration.json"))
+                using (StreamReader file = System.IO.File.OpenText(HarmonyHubConfigurationFile))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     hubConfig = (HarmonyHubConfiguration)serializer.Deserialize(file, typeof(HarmonyHubConfiguration));
