@@ -137,28 +137,14 @@ namespace j64.Harmony.WebApi.Controllers
 
         public IActionResult SyncSmartThings()
         {
-            SmartThingsRepository.InstallDevices(hubConfig);
+            SmartThingsRepository.InstallDevices(hubConfig, Request.Host.Value);
             return View("Index", hubConfig);
         }
 
         public IActionResult Findj64Address()
         {
-            string[] h = this.Request.Host.Value.Split(':');
-            if (h.Length > 1)
-                hubConfig.j64Port = Convert.ToInt32(h[1]);
-
-            var hostName = System.Net.Dns.GetHostEntryAsync(System.Net.Dns.GetHostName());
-            hostName.Wait();
-            foreach (var i in hostName.Result.AddressList)
-            {
-                if (i.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                {
-                    hubConfig.j64Address = i.ToString();
-                    break;
-                }
-            }
+            SmartThingsRepository.Determinej64Address(Request.Host.Value, hubConfig);
             HarmonyHubConfiguration.Save(hubConfig);
-
             return View("Index", hubConfig);
         }
     }

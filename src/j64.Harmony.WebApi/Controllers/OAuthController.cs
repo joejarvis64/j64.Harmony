@@ -106,7 +106,7 @@ namespace j64.Harmony.WebApi.Controllers
             SmartThingsRepository.PrepTheInstall(hubConfig);
 
             // Send all of the default devices to the smart app
-            SmartThingsRepository.InstallDevices(hubConfig);
+            SmartThingsRepository.InstallDevices(hubConfig, Request.Host.Value);
 
             // all done!
             return View(oai);

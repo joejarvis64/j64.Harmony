@@ -18,7 +18,8 @@ Here are the abbreviated, one liner, list of install steps:
 7. Run the web app -- cd src/j64.Harmony.WebApi; dnx web
 8. Configure the channels/apps
   * Harmony id/password
-  * Click install smart app
+  * Set the Channel/Volume Device
+  * Install the smart app via j64 webapi
   * Add custom channel names via the web app
   * Discover devices on amazon echo
 
@@ -126,10 +127,23 @@ Now listening on: http://0.0.0.0:2065
 Now that you have a web server running, you can bring up a browser on the machine and go to the app.  So you would open this url:  http://localhost:2065
 
 First, you will need to enter your account information for the harmony hub.  This is the email/password you used to initialize the harmony hub at the myharmony.com site.  Once you have 
-successfully entered your password you will receive a screen that allows you to name any
-channels that you want to be able to speak to Alexa. 
- 
- # Step 8 - Install the SmartApp
+successfully entered your password you will receive a screen that allows you to name any channels that you want to be able to speak to Alexa. 
+
+ > ![Set Harmony Hub](Images/HarmonyHubInformation.png "Set Harmony Hub")
+
+Next, you must set which device you use to control the volume and change channels on the TV.  
+
+ > ![Set Channel Device](Images/VolumeChannelDevice.png "Set Channels")
+
+Finally, add any channels that you want to be able to speak to Alexa.  You may have to experiment with channel names that the 
+Echo will recognize.  I have found that names like "Discovery Channel" cause the echo to start discovering new devices rather than
+turning on this channel.  Or names like "Fox News" cause the Echo device to turn on the fox news radio channel via amazon
+prime.  You can try new names and change them as often as you like.  If you do change the names just click the "Sync with Smarthings"
+button at the top of the page to get the new device to be set up on your mobile device. 
+
+ > ![Add new Channels](Images/ChannelNames.png "Set Channels Names")
+
+# Step 8 - Install the SmartApp
 
 Click on the "Install SmartApp" button at the top of the page.  This will bring up a page where you can put in the client id and secret key you created when you installed the smart app into your Smart Things developer IDE (see step #3 above).
 
@@ -144,11 +158,12 @@ The SmartThings authorization screen you see will look like this.  Select the hu
  > ![Authorize Smart App](Images/InstallSmartAppScreen2.png "Authorize  Smart App")
  
  
- After you have successfully authorized you are redirected back to the j64Harmony web app.  It should say that you have succesfully authorized the smart app.  At this point, you can bring up your mobile app and you should see the j64 smart app and j64 device types installed.  Again, it will install and name the devices according to the information that you setup on the home page of the j64 Harmony app.
+ After you have successfully authorized you are redirected back to the j64Harmony web app.  It should say that you have succesfully authorized the smart app.  At this point, you can bring up your mobile app and you should see the j64 smart app and j64 device types installed.  
+ The devices in the mobile app are named according to the information that you setup on the home page of the j64 Harmony app.
 
 > ![Authorize Smart App](Images/InstallSmartAppScreen3.png "Authorize  Smart App")
  
- # Step 9 - Test it out
+# Step 9 - Test it out
  
  If you have reached this point everything should be ready to go.  Pull up your Smart Things mobile app and you should be able to find the devices in your "Things" section.  Everything is named as you specified on the home page of the j64 Harmony App.  I like to put all of these devices into a room in the mobile app since that makes it easy to find all of the devices.
  

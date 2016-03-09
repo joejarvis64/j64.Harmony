@@ -65,7 +65,7 @@ namespace j64.Harmony.WebApi.Models
         /// <summary>
         /// Install or Update Devices in the SmartThings App
         /// </summary>
-        public static void InstallDevices(HarmonyHubConfiguration hubConfig)
+        public static void InstallDevices(HarmonyHubConfiguration hubConfig, string host)
         {
             OauthInfo authInfo = OauthRepository.Get();
 
@@ -73,6 +73,10 @@ namespace j64.Harmony.WebApi.Models
             if (String.IsNullOrEmpty(hubConfig.STHubAddress))
                 return;
 
+            // Set the IP address of this server if it has not been set yet
+            if (String.IsNullOrEmpty(hubConfig.j64Address))
+                SmartThingsRepository.Determinej64Address(host, hubConfig);
+                
             var url = $"http://{hubConfig.STHubAddress}:{hubConfig.STHubPort}";
             var client = new System.Net.Http.HttpClient();
 
@@ -117,6 +121,24 @@ namespace j64.Harmony.WebApi.Models
                 // TODO: display an appropriate error message!
             }
 
+        }
+        
+        public static void Determinej64Address(string host, HarmonyHubConfiguration hubConfig)
+        {
+            string[] h = host.Split(':');
+            if (h.Length > 1)
+                hubConfig.j64Port = Convert.ToInt32(h[1]);
+
+            var hostName = System.Net.Dns.GetHostEntryAsync(System.Net.Dns.GetHostName());
+            hostName.Wait();
+            foreach (var i in hostName.Result.AddressList)
+            {
+                if (i.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    hubConfig.j64Address = i.ToString();
+                    break;
+                }
+            }
         }
     }
 
