@@ -31,12 +31,48 @@ textarea {
     margin-left: 15px;
 }
 
-@media (min-width: 768px) {
-    .carousel-caption {
-        z-index: 10 !important;
-    }
+.table {
+    border-bottom-width: 1px;
+    border-bottom-style: dashed;
+}
 
-    .j64Img {
-        margin-left: 0px;
+.panel-heading {
+    font-weight: bold;
+}
+
+label, th {
+    font-weight: normal;
+}
+
+select {
+    margin-top: 5px;
+}
+
+.sayThis {
+    white-space: normal;
+}
+
+.toDoThis {
+}
+
+.tryIt {
+    white-space: nowrap;
+}
+
+.myNotes {
+    font-size: xx-small;
+    font-style: italic;
+    font-weight: bold;
+}
+
+
+@media (min-width: 768px) {
+    .sayThis {
+        white-space: nowrap;
+    }
+    
+    .toDoThis {
+        width: 100%;
     }
 }
+

@@ -27,21 +27,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <form asp-controller="Home" asp-action="Index">
-                    <button type="submit" class="btn btn-primary btn-sm navbar-btn"><i class="fa fa-microphone"></i>&nbsp;j64 Harmony</button>&nbsp;&nbsp;
-                </form>
+                <li><a asp-controller="Home" asp-action="Index"><i class="fa fa-microphone"></i>j64 Harmony</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <form asp-controller="Oauth" asp-action="Index">
-                            <button type="submit" class="btn btn-primary btn-sm navbar-btn">Install Smart App</button>&nbsp;&nbsp;
-                        </form>
+                    </li>
+                    <li class="dropdown">
+                       <a href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Configure <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-controller="Configure" asp-action="HubInformation">Configure Hubs</a></li>
+                            <li><a asp-controller="Configure" asp-action="DeviceNames">Configure Names for Echo</a></li>
+                            <li><a asp-controller="Home" asp-action="SyncSmartThings"><i class="fa fa-cloud-upload"></i>  Install Smart App</a></li>
+                        </ul>
                     </li>
                     <li>
-                        <form asp-controller="Home" asp-action="SyncSmartThings">
-                            <button type="submit" class="btn btn-primary btn-sm navbar-btn"><i class="fa fa-cloud-upload"></i>Sync with SmartThings</button>
-                        </form>
                     </li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")

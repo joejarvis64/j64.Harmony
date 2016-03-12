@@ -2,49 +2,14 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    .table {
-        border-bottom-width: 1px;
-        border-bottom-style: dashed;
-    }
 
-    .panel-heading {
-        font-weight: bold;
-    }
-
-    label, th {
-        font-weight: normal;
-    }
-
-    select {
-        margin-top: 5px;
-    }
-
-    .sayThis {
-        white-space: nowrap;
-    }
-
-    .toDoThis {
-        width: 100%;
-    }
-
-    .tryIt {
-        white-space: nowrap;
-    }
-
-    .myNotes {
-        font-size: xx-small;
-        font-style: italic;
-        font-weight: bold;
-    }
-</style>
 <form class="form" asp-controller="Home" asp-action="SaveChanges" method="post">
     <br />
     @if (!String.IsNullOrEmpty(Model.ChannelDevice) && !String.IsNullOrEmpty(Model.VolumeDevice))
     {
         <div class="panel panel-default">
             <div class="panel-heading">
-                Define your Alexa phrases
+                Alexa phrases
             </div>
             <div class="panel-body">
                 <table class="table table-hover">
@@ -88,22 +53,27 @@
                         <td><a class="btn btn-default btn-xs" asp-action="StartSurf"><i class="fa fa-spinner fa-fw"></i></a></td>
                     </tr>
                     <tr>
-                        <td class="sayThis">Alexa, turn on [@Model.ChannelSurfDeviceName]</td>
+                        <td class="sayThis">Alexa, turn off [@Model.ChannelSurfDeviceName]</td>
                         <td class="toDoThis">Stop surfing channels</td>
                         <td><a class="btn btn-default btn-xs" asp-action="StopSurf"><i class="fa fa-cog fa-fw"></i></a></td>
                     </tr>
                     <tr>
-                        <td class="sayThis">Alexa, turn on [@Model.VcrPauseDeviceName]</td>
-                        <td class="toDoThis">Pause the VCR</td>
+                        <td class="sayThis">Alexa, turn on/off [@Model.VcrPauseDeviceName]</td>
+                        <td class="toDoThis">Toggle play/pause button on DVR</td>
                         <td><a class="btn btn-default btn-xs" asp-action="Transport" asp-route-command="pause"><i class="fa fa-pause fa-fw"></i></a></td>
+                    </tr>
+                    <tr>
+                        <td class="sayThis">Alexa, turn on/off [@Model.LastChannelDeviceName]</td>
+                        <td class="toDoThis">Change to previous channel</td>
+                        <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="Previous"><i class="fa fa-refresh fa-fw"></i></a></td>
                     </tr>
                     <tfoot>
                         <tr>
                             <td colspan="3">
-                                <div class="myNotes">** Scroll down if you want to change which devices is used to control sound and volume</div>
-                                <div class="myNotes">** Scroll down if you want to change the sound and channel surf devices names</div>
-                                <div class="myNotes">** Volume only moves up/down by 2 button presses. It is not a true % of your TV volume</div>
-                                <div class="myNotes">** You can say any % you want to turn the sound up/down</div>
+                                <div class="myNotes">** The <span style='color:darkred'>[@Model.VolumeDevice]</span> is configured to control the volume</div> 
+                                <div class="myNotes">** The <span style='color:darkred'>[@Model.ChannelDevice]</span> is configured to control the channels</div> 
+                                <div class="myNotes">** Volume moves up/down by 2 button presses</div>
+                                <div class="myNotes">** Volume is not a true % of your TV volume</div>
                                 <div class="myNotes">** j64Harmony will surf only the channels you have defined below</div>
                             </td>
                         </tr>
@@ -113,34 +83,23 @@
                     <thead>
                         <tr>
                             <th><b><i>Say this...</i></b></th>
-                            <th><b>To set this channel</b></th>
+                            <th><b>To do this</b></th>
                             <th><b>Try&nbsp;it</b></th>
                         </tr>
-                        <tr>
-                            <th class="sayThis">Alexa, turn on <input asp-for="LastChannelDeviceName" style='width: 9em' /></th>
-                            <th class="toDoThis"><input readonly="readonly" style='display:none;width: 5em' value="previous" /></th>
-                            <th class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="Previous"><i class="fa fa-hand-o-left fa-fw"></i></a></th>
-                        </tr>
                     </thead>
+
                     @foreach (var fc in Model.FavoriteChannels)
                     {
                         <tr>
-                            <td class="sayThis">Alexa, turn on <input asp-for="@fc.Name" style='width: 9em' /></td>
-                            <td class="toDoThis"><input asp-for="@fc.Channel" style='width: 5em' type="number" />&nbsp;&nbsp;<a class="btn btn-default btn-xs" asp-action="DeleteChannel" asp-route-channel="@fc.Channel"><i class="fa fa-trash-o fa-fw"></i></a></td>
+                            <td class="sayThis">Alexa, turn on [@fc.Name]</td>
+                            <td class="toDoThis">set channel [@fc.Channel]</td>
                             <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="@fc.Channel"><i class="fa fa-hand-o-left fa-fw"></i></a></td>
                         </tr>
                     }
-                    <tr>
-                        <td colspan="3">
-                            <a class="btn btn-primary btn-sm" asp-action="AddChannel"><i class="fa fa-plus-circle"></i>Add Channel</a>&nbsp;
-                            <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>Save Channels</button>&nbsp;
-                        </td>
-                    </tr>
                     <tfoot>
                         <tr>
                             <td colspan="3">
                                 <div class="myNotes">** After modifying the channels you must ask Alexa to discover devices</div>
-                                <div class="myNotes">** If a channel device is not deleted from smart things, check to make sure it is not associated to the Echo app</div>
                             </td>
                         </tr>
                     </tfoot>
@@ -152,7 +111,7 @@
             {
         <div class="panel panel-default">
             <div class="panel-heading">
-                Select which device controls the channel and volume
+               Phrases to control channels
             </div>
             <div class="panel-body">
                 <div class="form-group">

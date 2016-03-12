@@ -1,0 +1,70 @@
+@model j64.Harmony.WebApi.ViewModels.Configure.HubInformationModel
+@{
+    ViewData["Title"] = "Hub Information";
+}
+
+<form class="form" asp-controller="Configure" asp-action="SaveChanges" method="post">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Harmony Hub Information
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="HarmonyEmail">Harmony User ID</label>
+                <input asp-for="HarmonyEmail" class="form-control" placeholder="Harmony ID (email)" type="email" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HarmonyPassword">Password</label>
+                <input asp-for="HarmonyPassword" class="form-control" placeholder="Harmony Password" type="password" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HarmonyHubAddress">Harmony Address</label>
+                <input asp-for="HarmonyHubAddress" class="form-control" placeholder="Name or IP of harmony hub" />
+            </div>
+            <div class="form-group">
+                <label asp-for="HarmonyHubPort">Harmony TCP Port</label>
+                <input asp-for="HarmonyHubPort" class="form-control" placeholder="TCP Port Harmony is listening on" type="number" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Harmony Hub Information</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Smart Things Hub Information
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="StHubAddress">SmartThings Hub IP Address</label>
+                <input asp-for="StHubAddress" class="form-control" placeholder="Name or IP of smartThings hub" />
+            </div>
+            <div class="form-group">
+                <label asp-for="StHubPort">SmartThings Port</label>
+                <input asp-for="StHubPort" class="form-control" placeholder="Port SmartThings is listening on" type="number" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save SmartThings Hub Information</button>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            j64 Server Gateway Information
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="j64Address">j64 IP Address</label>
+                <input asp-for="j64Address" class="form-control" placeholder="IP of j64 Server" />
+            </div>
+            <div class="form-group">
+                <label asp-for="j64Port">j64 TCP Port</label>
+                <input asp-for="j64Port" class="form-control" placeholder="Port j64 server is listening on" type="number" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save j64 Server Information</button>&nbsp;
+                <a class="btn btn-primary btn-sm" asp-action="Findj64Address"><i class="fa fa-plus-circle"></i>Determine Server IP</a>&nbsp;
+            </div>
+        </div>
+    </div>
+</form>
