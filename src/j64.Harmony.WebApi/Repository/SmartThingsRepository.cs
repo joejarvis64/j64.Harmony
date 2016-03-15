@@ -1,20 +1,17 @@
-﻿using j64.Harmony.WebApi.Controllers;
-using j64.Harmony.WebApi.ViewModels.Config;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using j64.Harmony.WebApi.Models;
 
-namespace j64.Harmony.WebApi.Models
+namespace j64.Harmony.WebApi.Repository
 {
     public class SmartThingsRepository
     {
         /// <summary>
         /// Install or Update Devices in the SmartThings App
         /// </summary>
-        public static void PrepTheInstall(HarmonyHubConfiguration hubConfig)
+        public static void PrepTheInstall(j64HarmonyGateway j64Config)
         {
             try
             {
@@ -23,7 +20,7 @@ namespace j64.Harmony.WebApi.Models
                     return;
 
                 // create a new identifier for this app!
-                hubConfig.j64AppId = Guid.NewGuid().ToString();
+                j64Config.j64AppId = Guid.NewGuid().ToString();
 
                 string url = authInfo.endpoints[0].uri + $"/prepInstall";
 
@@ -33,7 +30,7 @@ namespace j64.Harmony.WebApi.Models
                 msg.Headers.Add("Authorization", $"Bearer {authInfo.accessToken}");
 
                 List<KeyValuePair<string, string>> parms = new List<KeyValuePair<string, string>>();
-                parms.Add(new KeyValuePair<string, string>("j64AppId", hubConfig.j64AppId));
+                parms.Add(new KeyValuePair<string, string>("j64AppId", j64Config.j64AppId));
                 parms.Add(new KeyValuePair<string, string>("j64UserName", "admin"));
                 parms.Add(new KeyValuePair<string, string>("j64Password", "Admin_01"));
                 msg.Content = new System.Net.Http.FormUrlEncodedContent(parms);
@@ -46,15 +43,15 @@ namespace j64.Harmony.WebApi.Models
                     var result = response.Result.Content.ReadAsStringAsync().Result;
                     JObject ipInfo = JObject.Parse(result);
 
-                    hubConfig.STHubAddress = (string)ipInfo["hubIP"];
-                    hubConfig.STHubPort = Convert.ToInt32((string)ipInfo["hubPort"]);
+                    j64Config.STHubAddress = (string)ipInfo["hubIP"];
+                    j64Config.STHubPort = Convert.ToInt32((string)ipInfo["hubPort"]);
 
-                    if (hubConfig.STHubAddress == "null")
+                    if (j64Config.STHubAddress == "null")
                     {
-                        hubConfig.STHubAddress = null;
-                        hubConfig.STHubPort = 0;
+                        j64Config.STHubAddress = null;
+                        j64Config.STHubPort = 0;
                     }
-                    HarmonyHubConfiguration.Save(hubConfig);
+                    j64HarmonyGatewayRepository.Save(j64Config);
                 }
             }
             catch (Exception)
@@ -65,38 +62,38 @@ namespace j64.Harmony.WebApi.Models
         /// <summary>
         /// Install or Update Devices in the SmartThings App
         /// </summary>
-        public static void InstallDevices(HarmonyHubConfiguration hubConfig, string host)
+        public static void InstallDevices(j64HarmonyGateway j64Config, string host)
         {
             OauthInfo authInfo = OauthRepository.Get();
 
             // We can't sync if the IP has not yet been set
-            if (String.IsNullOrEmpty(hubConfig.STHubAddress))
+            if (String.IsNullOrEmpty(j64Config.STHubAddress))
                 return;
 
             // Set the IP address of this server if it has not been set yet
-            if (String.IsNullOrEmpty(hubConfig.j64Address))
-                SmartThingsRepository.Determinej64Address(host, hubConfig);
+            if (String.IsNullOrEmpty(j64Config.j64Address))
+                SmartThingsRepository.Determinej64Address(host, j64Config);
                 
-            var url = $"http://{hubConfig.STHubAddress}:{hubConfig.STHubPort}";
+            var url = $"http://{j64Config.STHubAddress}:{j64Config.STHubPort}";
             var client = new System.Net.Http.HttpClient();
 
             System.Net.Http.HttpRequestMessage msg = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Post, url);
 
             List<j64Device> l = new List<j64Device>();
 
-            l.Add(new j64Device() { Name = hubConfig.SoundDeviceName, DeviceValue = null, DeviceType = j64DeviceType.Volume });
-            l.Add(new j64Device() { Name = hubConfig.ChannelSurfDeviceName, DeviceValue = null, DeviceType = j64DeviceType.Surfing });
-            l.Add(new j64Device() { Name = hubConfig.VcrPauseDeviceName, DeviceValue = "pause", DeviceType = j64DeviceType.VCR });
+            l.Add(new j64Device() { Name = j64Config.SoundDeviceName, DeviceValue = null, DeviceType = j64DeviceType.Volume });
+            l.Add(new j64Device() { Name = j64Config.ChannelSurfDeviceName, DeviceValue = null, DeviceType = j64DeviceType.Surfing });
+            l.Add(new j64Device() { Name = j64Config.VcrPauseDeviceName, DeviceValue = "pause", DeviceType = j64DeviceType.VCR });
 
-            foreach (var fc in hubConfig.FavoriteChannels)
-                l.Add(new j64Device() { Name = fc.Name, DeviceValue = fc.Channel, DeviceType = j64DeviceType.Channel });
-            l.Add(new j64Device() { Name = hubConfig.LastChannelDeviceName, DeviceValue = "previous", DeviceType = j64DeviceType.Channel });
+            foreach (var fc in j64Config.FavoriteChannels)
+                l.Add(new j64Device() { Name = fc.Name, DeviceValue = fc.Channel.ToString(), DeviceType = j64DeviceType.Channel });
+            l.Add(new j64Device() { Name = j64Config.LastChannelDeviceName, DeviceValue = "previous", DeviceType = j64DeviceType.Channel });
 
             var request = new MyRequest<List<j64Device>>()
             {
-                j64Ip = hubConfig.j64Address,
-                j64Port = hubConfig.j64Port,
-                j64AppId = hubConfig.j64AppId,
+                j64Ip = j64Config.j64Address,
+                j64Port = j64Config.j64Port,
+                j64AppId = j64Config.j64AppId,
                 Route = "/installAllDevices",
                 Payload = l
             };
@@ -123,11 +120,11 @@ namespace j64.Harmony.WebApi.Models
 
         }
         
-        public static void Determinej64Address(string host, HarmonyHubConfiguration hubConfig)
+        public static void Determinej64Address(string host, j64HarmonyGateway j64Config)
         {
             string[] h = host.Split(':');
             if (h.Length > 1)
-                hubConfig.j64Port = Convert.ToInt32(h[1]);
+                j64Config.j64Port = Convert.ToInt32(h[1]);
 
             var hostName = System.Net.Dns.GetHostEntryAsync(System.Net.Dns.GetHostName());
             hostName.Wait();
@@ -135,7 +132,7 @@ namespace j64.Harmony.WebApi.Models
             {
                 if (i.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
-                    hubConfig.j64Address = i.ToString();
+                    j64Config.j64Address = i.ToString();
                     break;
                 }
             }

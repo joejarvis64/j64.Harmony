@@ -1,9 +1,9 @@
-@model j64.Harmony.WebApi.ViewModels.Configure.HubInformationModel
+@model j64.Harmony.WebApi.ViewModels.Configure.HubsAndGatewaysViewModel
 @{
-    ViewData["Title"] = "Hub Information";
+    ViewData["Title"] = "Hub & Gateway Information";
 }
-
-<form class="form" asp-controller="Configure" asp-action="SaveChanges" method="post">
+<form class="form" asp-action="Edit">
+    <br />
     <div class="panel panel-default">
         <div class="panel-heading">
             Harmony Hub Information
@@ -12,24 +12,28 @@
             <div class="form-group">
                 <label asp-for="HarmonyEmail">Harmony User ID</label>
                 <input asp-for="HarmonyEmail" class="form-control" placeholder="Harmony ID (email)" type="email" />
+                <span asp-validation-for="HarmonyEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HarmonyPassword">Password</label>
-                <input asp-for="HarmonyPassword" class="form-control" placeholder="Harmony Password" type="password" />
+                <input asp-for="HarmonyPassword" class="form-control" placeholder="********" type="password" />
+                <span asp-validation-for="HarmonyPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HarmonyHubAddress">Harmony Address</label>
                 <input asp-for="HarmonyHubAddress" class="form-control" placeholder="Name or IP of harmony hub" />
+                <span asp-validation-for="HarmonyHubAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="HarmonyHubPort">Harmony TCP Port</label>
                 <input asp-for="HarmonyHubPort" class="form-control" placeholder="TCP Port Harmony is listening on" type="number" />
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Harmony Hub Information</button>
+                <span asp-validation-for="HarmonyHubPort" class="text-danger"></span>
             </div>
         </div>
     </div>
+    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save All</button>&nbsp;
+    <br />
+    <br />
     <div class="panel panel-default">
         <div class="panel-heading">
             Smart Things Hub Information
@@ -38,14 +42,14 @@
             <div class="form-group">
                 <label asp-for="StHubAddress">SmartThings Hub IP Address</label>
                 <input asp-for="StHubAddress" class="form-control" placeholder="Name or IP of smartThings hub" />
+                <span asp-validation-for="StHubAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StHubPort">SmartThings Port</label>
                 <input asp-for="StHubPort" class="form-control" placeholder="Port SmartThings is listening on" type="number" />
+                <span asp-validation-for="StHubPort" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save SmartThings Hub Information</button>
-            </div>
+            <div class="myNotes">** The smartthings hub address/port is automatically derived when installing the smart app but can be overriden here if necessary</div>
         </div>
     </div>
     <div class="panel panel-default">
@@ -56,15 +60,17 @@
             <div class="form-group">
                 <label asp-for="j64Address">j64 IP Address</label>
                 <input asp-for="j64Address" class="form-control" placeholder="IP of j64 Server" />
+                <span asp-validation-for="j64Address" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="j64Port">j64 TCP Port</label>
                 <input asp-for="j64Port" class="form-control" placeholder="Port j64 server is listening on" type="number" />
+                <span asp-validation-for="j64Port" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save j64 Server Information</button>&nbsp;
-                <a class="btn btn-primary btn-sm" asp-action="Findj64Address"><i class="fa fa-plus-circle"></i>Determine Server IP</a>&nbsp;
+                <a class="btn btn-primary btn-sm" asp-action="Findj64Address"><i class="fa fa-plus-circle"></i> Determine j64 Server IP</a>&nbsp;
             </div>
+            <div class="myNotes">** The j64 gateway address/port is automatically derived when installing the smart app but can be overriden here if necessary</div>
         </div>
     </div>
 </form>

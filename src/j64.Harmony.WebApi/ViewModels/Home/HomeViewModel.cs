@@ -8,7 +8,7 @@ using System.IO;
 
 namespace j64.Harmony.WebApi.ViewModels.Home
 {
-    public class HarmonyHubConfiguration
+    public class HomeViewModel
     {
         public string SoundDeviceName { get; set; } = "Sound";
         public string ChannelSurfDeviceName { get; set; } = "Surfing";
@@ -16,6 +16,7 @@ namespace j64.Harmony.WebApi.ViewModels.Home
         public string LastChannelDeviceName { get; set; } = "Previous Channel";
         public string VolumeDevice { get; set; } = "";
         public string ChannelDevice { get; set; } = "";
+
         public List<FavoriteChannel> FavoriteChannels = new List<FavoriteChannel>();
     }
 

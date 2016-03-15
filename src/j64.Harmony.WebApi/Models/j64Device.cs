@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace j64.Harmony.WebApi.ViewModels.Config
+namespace j64.Harmony.WebApi.Models
 {
     public class j64Device
     {

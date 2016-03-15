@@ -71,15 +71,20 @@ namespace j64.Harmony.Xmpp
             return harmonyAuthToken;
         }
 
-        public void StartNewConnection(string userName, string password, string address, int port)
+        public bool StartNewConnection(string userName, string password, string address, int port)
         {
             // Reset the connection if it is already open
             ResetConnection();
+            hubConfig = null;
+
+            // We can't connect if these have not been set
+            if (String.IsNullOrEmpty(userName) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(address) || port == 0)
+                return false;
 
             // Get an auth token if we dont have one
             var harmonyAuthToken = GetUserAuthToken(userName, password);
             if (harmonyAuthToken == null)
-                throw new Exception("Could not get a token from Logitech server");
+                return false;
 
             OpenConnection(address, port);
 
@@ -93,6 +98,8 @@ namespace j64.Harmony.Xmpp
 
             // Get the config info
             GetConfig();
+
+            return true;
         }
 
         public void OpenConnection(string address, int port)

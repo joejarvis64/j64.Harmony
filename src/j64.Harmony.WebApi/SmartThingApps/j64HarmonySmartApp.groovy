@@ -71,22 +71,22 @@ def installAllDevices(j64Devices) {
     	def dt = ""
         def ni = ""
         if (j64d.DeviceType == 0) {
-        	dt = "j64 - Volume Switch"
+        	dt = "j64 Volume Switch"
             ni = "j64HarmonyVolume"
         }
         
         if (j64d.DeviceType == 1) {
-        	dt = "j64 - Surfing Switch"
+        	dt = "j64 Surfing Switch"
             ni = "j64HarmonySurfing"
         }
         
         if (j64d.DeviceType == 2) {
-        	dt = "j64 - Channel Switch"
+        	dt = "j64 Channel Switch"
             ni = "j64HarmonyChannel-${j64d.DeviceValue}"
         }
         
         if (j64d.DeviceType == 3) {
-        	dt = "j64 - VCR Switch"
+        	dt = "j64 VCR Switch"
             ni = "j64HarmonyVcr-${j64d.DeviceValue}"
         }
        	AddDevice(ni, j64d.Name, dt, children) 

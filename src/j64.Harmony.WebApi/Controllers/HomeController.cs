@@ -1,151 +1,87 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
-using j64.Harmony.WebApi.ViewModels.Config;
-using j64.Harmony.Xmpp;
-using Microsoft.AspNet.Mvc.Rendering;
-using System.IO;
-using Newtonsoft.Json;
 using j64.Harmony.WebApi.Models;
+using j64.Harmony.WebApi.ViewModels.Home;
+using j64.Harmony.Xmpp;
 
 namespace j64.Harmony.WebApi.Controllers
 {
     public class HomeController : Controller
     {
-        private HarmonyHubConfiguration hubConfig = null;
+        private j64HarmonyGateway j64Config = null;
         private Hub myHub = null;
         private static int previousLevel { get; set; } = 50;
 
-        public HomeController(HarmonyHubConfiguration hubConfig, Hub hub)
+        private HomeViewModel myHomeViewModel
         {
-            this.hubConfig = hubConfig;
+            get
+            {
+                var hvm = new HomeViewModel()
+                {
+                     ChannelDevice = j64Config.ChannelDevice,
+                     ChannelSurfDeviceName = j64Config.ChannelSurfDeviceName,
+                     LastChannelDeviceName = j64Config.LastChannelDeviceName,
+                     SoundDeviceName = j64Config.SoundDeviceName,
+                     VcrPauseDeviceName = j64Config.VcrPauseDeviceName,
+                     VolumeDevice = j64Config.VolumeDevice
+                };
+                j64Config.FavoriteChannels.ForEach(x => hvm.FavoriteChannels.Add(new ViewModels.Home.FavoriteChannel() { Channel = x.Channel, Name = x.Name }));
+                return hvm;
+            }
+        }
+
+        public HomeController(j64HarmonyGateway hubConfig, Hub hub)
+        {
+            this.j64Config = hubConfig;
             this.myHub = hub;
         }
 
         public IActionResult Index()
         {
-            return View(hubConfig);
+            // If not connected to the smart hub go to the configure page
+            if (myHub.hubConfig == null || String.IsNullOrEmpty(j64Config.ChannelDevice) || String.IsNullOrEmpty(j64Config.VolumeDevice))
+                    return RedirectToAction("Edit", "FirstTimeConfig");
+
+            return View(myHomeViewModel);
         }
 
         public IActionResult Mute()
         {
-            myHub.SendCommand(hubConfig.VolumeDevice, "mute", "press");
-            return View("Index", hubConfig);
+            myHub.SendCommand(j64Config.VolumeDevice, "mute", "press");
+            return View("Index", myHomeViewModel);
         }
 
         [HttpGet("VolumeLevel/{level}")]
         public IActionResult VolumeLevel(int level)
         {
-            myHub.SetVolume(level, previousLevel, hubConfig.VolumeDevice);
-            return View("Index", hubConfig);
+            myHub.SetVolume(level, previousLevel, j64Config.VolumeDevice);
+            return View("Index", myHomeViewModel);
         }
 
         [HttpGet("SetChannel/{channel}")]
         public IActionResult SetChannel(string channel)
         {
-            myHub.SendCommand(hubConfig.ChannelDevice, "pause", "press");
-            return View("Index", hubConfig);
+            myHub.SendCommand(j64Config.ChannelDevice, "pause", "press");
+            return View("Index", myHomeViewModel);
         }
 
         [HttpGet("Transport/{command}")]
         public IActionResult Transport(string command)
         {
-            myHub.SendCommand(hubConfig.ChannelDevice, command, "press");
-            return View("Index", hubConfig);
+            myHub.SendCommand(j64Config.ChannelDevice, command, "press");
+            return View("Index", myHomeViewModel);
         }
 
         public IActionResult StartSurf()
         {
-            myHub.StartChannelSurf(hubConfig.ChannelDevice);
-            return View("Index", hubConfig);
+            myHub.StartChannelSurf(j64Config.ChannelDevice);
+            return View("Index", myHomeViewModel);
         }
 
         public IActionResult StopSurf()
         {
             myHub.StopChannelSurf();
-            return View("Index", hubConfig);
-        }
-
-        public IActionResult AddChannel()
-        {
-           hubConfig.FavoriteChannels.Add(new FavoriteChannel() { Name = "New Channel", Channel = "1000"} );
-            return View("Index", hubConfig);
-        }
-
-        [HttpGet("DeleteChannel/{channel}")]
-        public IActionResult DeleteChannel(string channel)
-        {
-            var fc = hubConfig.FavoriteChannels.FirstOrDefault(x => x.Channel == channel);
-            if (fc != null)
-                hubConfig.FavoriteChannels.Remove(fc);
-
-            return View("Index", hubConfig);
-        }
-
-        public IActionResult SaveChanges(HarmonyHubConfiguration hc)
-        {
-            hubConfig.Email = hc.Email;
-            if (!String.IsNullOrEmpty(hc.Password))
-                hubConfig.Password = hc.Password;
-            hubConfig.HubAddress = hc.HubAddress;
-            hubConfig.HubPort = hc.HubPort;
-            hubConfig.ChannelDevice = hc.ChannelDevice;
-            hubConfig.VolumeDevice = hc.VolumeDevice;
-            hubConfig.ChannelSurfDeviceName = hc.ChannelSurfDeviceName;
-            hubConfig.SoundDeviceName = hc.SoundDeviceName;
-            hubConfig.ChanneKeyPauseInterval = hc.ChanneKeyPauseInterval;
-            hubConfig.LastChannelDeviceName = hc.LastChannelDeviceName;
-            hubConfig.VcrPauseDeviceName = hc.VcrPauseDeviceName;
-            hubConfig.STHubAddress = hc.STHubAddress;
-            hubConfig.STHubPort = hc.STHubPort;
-
-            if (Request.Form["fc.Name"].Count > 0)
-            {
-                hubConfig.FavoriteChannels.Clear();
-                for (int i = 0; i < Request.Form["fc.Name"].Count; i++)
-                {
-                    string name = Request.Form["fc.Name"][i];
-                    hubConfig.FavoriteChannels.Add(new FavoriteChannel()
-                    {
-                        Name = Request.Form["fc.Name"][i],
-                        Channel = Request.Form["fc.Channel"][i]
-                    });
-                }
-            }
-
-            // Refresh the connection
-            myHub.StartNewConnection(hc.Email, hc.Password, hc.HubAddress, hc.HubPort);
-
-            // We always have to update the device list on the Hub Configuration after we get the config info
-            hubConfig.DeviceList.Clear();
-            myHub.hubConfig?.device.ForEach(x => hubConfig.DeviceList.Add(new Microsoft.AspNet.Mvc.Rendering.SelectListItem() { Text = x.label }));
-
-            // Set a default to get the ball rolling
-            if (String.IsNullOrEmpty(hubConfig.ChannelDevice))
-            {
-                hubConfig.ChannelDevice = myHub.hubConfig.device?[0].label;
-                hubConfig.VolumeDevice = myHub.hubConfig.device?[0].label;
-            }
-
-            // Save the new data
-            HarmonyHubConfiguration.Save(hubConfig);
-
-            return View("Index", hubConfig);
-        }
-
-        public IActionResult SyncSmartThings()
-        {
-            SmartThingsRepository.InstallDevices(hubConfig, Request.Host.Value);
-            return View("Index", hubConfig);
-        }
-
-        public IActionResult Findj64Address()
-        {
-            SmartThingsRepository.Determinej64Address(Request.Host.Value, hubConfig);
-            HarmonyHubConfiguration.Save(hubConfig);
-            return View("Index", hubConfig);
+            return View("Index", myHomeViewModel);
         }
     }
 }

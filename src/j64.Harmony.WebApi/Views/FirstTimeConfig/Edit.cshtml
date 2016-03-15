@@ -1,0 +1,77 @@
+﻿@model j64.Harmony.WebApi.ViewModels.Configure.FirstTimeConfigViewModel
+@{
+    ViewData["Title"] = "Hub & Gateway Information";
+}
+<form class="form" asp-action="Edit">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            @if (Model.IsConnected)
+            {
+                <i class="fa fa-check-square-o" style="color:green"></i>
+            }
+            else
+            {
+                <i class="fa fa-square-o"></i>
+            }
+                Step 1 - connect to your Harmony Hub
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="HarmonyEmail">Harmony User ID</label>
+                <input asp-for="HarmonyEmail" class="form-control" placeholder="Harmony ID (email)" type="email" />
+                <span asp-validation-for="HarmonyEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HarmonyPassword">Password</label>
+                <input asp-for="HarmonyPassword" class="form-control" placeholder="********" type="password" />
+                <span asp-validation-for="HarmonyPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HarmonyHubAddress">Harmony Address</label>
+                <input asp-for="HarmonyHubAddress" class="form-control" placeholder="Name or IP of harmony hub" />
+                <span asp-validation-for="HarmonyHubAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HarmonyHubPort">Harmony TCP Port</label>
+                <input asp-for="HarmonyHubPort" class="form-control" placeholder="TCP Port Harmony is listening on" type="number" />
+                <span asp-validation-for="HarmonyHubPort" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Connect to Harmony Hub</button>&nbsp;
+            </div>
+        </div>
+        <br />
+        @if (Model.IsConnected == true)
+        {
+            <br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    @if (!String.IsNullOrEmpty(Model.VolumeDevice) && !String.IsNullOrEmpty(Model.ChannelDevice))
+                    {
+                        <i class="fa fa-check-square-o" style="color:green"></i>
+                    }
+                    else
+                    {
+                        <i class="fa fa-square-o"></i>
+                    }
+                    Step 2- specify which devices to use
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label asp-for="VolumeDevice">Device used to control volume</label>
+                        <select class="form-control" asp-for="VolumeDevice" asp-items="Model.VolumeDeviceList"></select>
+                        <span asp-validation-for="VolumeDevice" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ChannelDevice">Device used to change channels</label>
+                        <select class="form-control" asp-for="ChannelDevice" asp-items="Model.ChannelDeviceList"></select>
+                        <span asp-validation-for="ChannelDevice" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Device Names</button>
+                    </div>
+                </div>
+            </div>
+        }
+</form>

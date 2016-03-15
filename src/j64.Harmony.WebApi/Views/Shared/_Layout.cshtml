@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -27,18 +27,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <li><a asp-controller="Home" asp-action="Index"><i class="fa fa-microphone"></i>j64 Harmony</a>
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand" style="font-size: 14px;"><i class="fa fa-microphone"></i> j64 Harmony</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>
-                    </li>
                     <li class="dropdown">
-                       <a href="#" class="btn dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Configure <span class="caret"></span></a>
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Configure <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a asp-controller="Configure" asp-action="HubInformation">Configure Hubs</a></li>
-                            <li><a asp-controller="Configure" asp-action="DeviceNames">Configure Names for Echo</a></li>
-                            <li><a asp-controller="Home" asp-action="SyncSmartThings"><i class="fa fa-cloud-upload"></i>  Install Smart App</a></li>
+                            <li><a asp-controller="FavoriteChannel" asp-action="Index"><i class="fa fa-file-audio-o fa-fw"></i> Favorite Channels</a></li>
+                            <li><a asp-controller="HubsAndGateways" asp-action="Edit"><i class="fa fa-server fa-fw"></i> Hubs &amp; Gateways</a></li>
+                            <li><a asp-controller="DeviceNames" asp-action="Edit"><i class="fa fa-file-audio-o fa-fw"></i> Device Names</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a asp-controller="Oauth" asp-action="Index"><i class="fa fa-cloud-upload fa-fw"></i> Install Smart App</a></li>
                         </ul>
                     </li>
                     <li>

@@ -1,53 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.OptionsModel;
+﻿using Microsoft.AspNet.Mvc;
 using j64.Harmony.Xmpp;
-using j64.Harmony.WebApi.ViewModels.Config;
+using j64.Harmony.WebApi.Models;
 
 namespace j64.Harmony.WebApi.Controllers
 {
     [Route("api/[controller]")]
     public class HarmonyHubController : Controller
     {
-        private HarmonyHubConfiguration hubConfig = null;
+        private j64HarmonyGateway j64Config = null;
         private Hub myHub = null;
 
         private static int previousLevel { get; set; } = 50;
 
-        public HarmonyHubController(HarmonyHubConfiguration hubConfig, Hub hub)
+        public HarmonyHubController(j64HarmonyGateway hubConfig, Hub hub)
         {
-            this.hubConfig = hubConfig;
+            this.j64Config = hubConfig;
             myHub = hub;
         }
 
         [HttpGet("ToggleMute")]
         public IActionResult ToggleMute()
         {
-            myHub.SendCommand(hubConfig.VolumeDevice, "mute", "press");
+            myHub.SendCommand(j64Config.VolumeDevice, "mute", "press");
             return new ObjectResult("mute toggled");
         }
 
         [HttpGet("SetVolume/{level}")]
         public IActionResult SetVolume(int level)
         {
-            myHub.SetVolume(level, previousLevel, hubConfig.VolumeDevice);
+            myHub.SetVolume(level, previousLevel, j64Config.VolumeDevice);
             return new ObjectResult("volume level set");
         }
 
         [HttpGet("SetChannel/{channel}")]
         public IActionResult SetChannel(string channel)
         {
-            myHub.ChangeChannel(channel, hubConfig.ChannelDevice, hubConfig.ChanneKeyPauseInterval);
+            myHub.ChangeChannel(channel, j64Config.ChannelDevice, j64Config.ChanneKeyPauseInterval);
             return new ObjectResult("channel has been set");
         }
 
         [HttpGet("Transport/{command}")]
         public IActionResult Transport(string command)
         {
-            myHub.SendCommand(hubConfig.ChannelDevice, command, "press");
+            myHub.SendCommand(j64Config.ChannelDevice, command, "press");
             return new ObjectResult("transport command has been set");
         }
 
@@ -55,7 +50,7 @@ namespace j64.Harmony.WebApi.Controllers
         public IActionResult StartChannelSurf(string startStop)
         {
             if (startStop.ToLower() == "start")
-                myHub.StartChannelSurf(hubConfig.ChannelDevice);
+                myHub.StartChannelSurf(j64Config.ChannelDevice);
             else
                 myHub.StopChannelSurf();
 

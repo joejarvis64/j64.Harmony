@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
+using j64.Harmony.WebApi.Models;
 
-namespace j64.Harmony.WebApi.Models
+namespace j64.Harmony.WebApi.Repository
 {
     public class OauthRepository
     {

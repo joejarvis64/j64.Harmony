@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Builder;
+﻿using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
@@ -10,9 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using j64.Harmony.WebApi.Models;
-using j64.Harmony.WebApi.Services;
-using j64.Harmony.WebApi.ViewModels.Config;
 using j64.Harmony.Xmpp;
+using j64.Harmony.WebApi.Repository;
 
 namespace j64.Harmony.WebApi
 {
@@ -30,7 +25,7 @@ namespace j64.Harmony.WebApi
                 builder.AddUserSecrets();
             }
 
-            HarmonyHubConfiguration.HarmonyHubConfigurationFile = env.MapPath("HarmonyHubConfiguration.json");
+            j64HarmonyGatewayRepository.HarmonyHubConfigurationFile = env.MapPath("j64GatewayConfiguration.json");
             OauthRepository.RepositoryFile = env.MapPath("SmartThings.json");
             
             builder.AddEnvironmentVariables();
@@ -55,35 +50,15 @@ namespace j64.Harmony.WebApi
             services.AddMvc();
 
             // Get the configuration info
-            HarmonyHubConfiguration hubConfig = HarmonyHubConfiguration.Read();
-            services.AddInstance<HarmonyHubConfiguration>(hubConfig);
+            j64HarmonyGateway j64Config = j64HarmonyGatewayRepository.Read();
+            services.AddInstance<j64HarmonyGateway>(j64Config);
 
             // Get an auth token from the harmony "cloud"
             Hub myHub = new Hub();
-            if (hubConfig.Email != null && hubConfig.Password != null && hubConfig.HubAddress != null && hubConfig.HubPort != 0)
-            {
-                try
-                {
-                    myHub.StartNewConnection(hubConfig.Email, hubConfig.Password, hubConfig.HubAddress, hubConfig.HubPort);
-                }
-                catch (Exception)
-                {
-                    // Reset the devices since we could not get a connect
-                    hubConfig.VolumeDevice = null;
-                    hubConfig.ChannelDevice = null;
-                }
-            }
-
-            // We always have to update the device list on the Hub Configuration after we get the config info
-            hubConfig.DeviceList.Clear();
-            myHub.hubConfig?.device.ForEach(x => hubConfig.DeviceList.Add(new Microsoft.AspNet.Mvc.Rendering.SelectListItem() { Text = x.label }));
+            bool connected = myHub.StartNewConnection(j64Config.Email, j64Config.Password, j64Config.HubAddress, j64Config.HubPort);
 
             // Add the hub as a service available to all of the controllers
             services.AddInstance<Hub>(myHub);
-
-            // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

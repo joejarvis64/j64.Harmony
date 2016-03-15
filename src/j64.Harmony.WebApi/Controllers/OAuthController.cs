@@ -1,28 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using j64.Harmony.WebApi.Models;
 using Newtonsoft.Json;
-using System.IO;
-using Microsoft.AspNet.Authorization;
-using j64.Harmony.WebApi.ViewModels.Config;
+using Microsoft.AspNet.Hosting;
+using j64.Harmony.WebApi.Repository;
+using j64.Harmony.WebApi.ViewModels.Configure;
+using System.Threading.Tasks;
 
 namespace j64.Harmony.WebApi.Controllers
 {
     public class OAuthController : Controller
     {
-        HarmonyHubConfiguration hubConfig;
+        j64HarmonyGateway hubConfig;
+        IHostingEnvironment myEnv;
 
-        public OAuthController(HarmonyHubConfiguration hubConfig)
+        public OAuthController(j64HarmonyGateway j64Config, IHostingEnvironment env)
         {
-            this.hubConfig = hubConfig;
+            this.hubConfig = j64Config;
+            this.myEnv = env;
         }
 
         public IActionResult Index()
         {
-            return View(OauthRepository.Get());
+            var oauth = OauthRepository.Get();
+            var ovm = new OauthViewModel()
+            {
+                ClientKey = oauth.clientKey,
+                SecretKey = oauth.secretKey
+            };
+
+            return View(ovm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateSmartApp(OauthViewModel authInfo)
+        {
+            if (ModelState.IsValid == false)
+                return View(authInfo);
+
+            var conn = new SmartThingsConnection();
+            if (await conn.Login(authInfo.STUserId, authInfo.STPassword) == false)
+            {
+                ModelState.AddModelError("STPassword", "Could not connect to smart things using the supplied credentials");
+                return View("Index", authInfo);
+            }
+
+            var cs = new DeviceTypeRepository(conn, "j64 Channel Switch", myEnv.MapPath("../SmartThingApps/j64ChannelSwitchDevice.groovy"));
+            var ss = new DeviceTypeRepository(conn, "j64 Surfing Switch", myEnv.MapPath("../SmartThingApps/j64SurfingSwitchDevice.groovy"));
+            var vs = new DeviceTypeRepository(conn, "j64 VCR Switch", myEnv.MapPath("../SmartThingApps/j64VcrSwitchDevice.groovy"));
+            var os = new DeviceTypeRepository(conn, "j64 Volume Switch", myEnv.MapPath("../SmartThingApps/j64VolumeSwitchDevice.groovy"));
+
+            var har = new SmartAppRepository(conn, "j64 Harmony", myEnv.MapPath("../SmartThingApps/j64HarmonySmartApp.groovy"));
+
+            // Save the client/secret keys
+            var oauth = OauthRepository.Get();
+            oauth.clientKey = har.clientKey;
+            oauth.secretKey = har.secretKey;
+            OauthRepository.Save(oauth);
+
+            var ovm = new OauthViewModel()
+            {
+                ClientKey = oauth.clientKey,
+                SecretKey = oauth.secretKey
+            };
+
+            return View("Index", ovm);
         }
 
         [HttpPost]

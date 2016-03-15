@@ -14,7 +14,7 @@
  *
  */
 metadata {
-	definition (name: "j64 - Volume Switch", namespace: "j64", author: "joejarvis64@gmail.com") {
+	definition (name: "j64 Volume Switch", namespace: "j64", author: "joejarvis64@gmail.com") {
 		capability "Switch"
 		capability "Switch Level"
 		capability "Refresh"
