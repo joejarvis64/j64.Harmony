@@ -27,21 +27,7 @@ namespace j64.Harmony.WebApi.Controllers
             if (myHub.hubConfig == null || String.IsNullOrEmpty(myj64Config.ChannelDevice) || String.IsNullOrEmpty(myj64Config.VolumeDevice))
                 return RedirectToAction("Edit", "FirstTimeConfig");
 
-            var dvm = new DeviceNamesViewModel()
-            {
-                ChanneKeyPauseInterval = myj64Config.ChanneKeyPauseInterval,
-                ChannelDevice = myj64Config.ChannelDevice,
-                ChannelSurfDeviceName = myj64Config.ChannelSurfDeviceName,
-                LastChannelDeviceName = myj64Config.LastChannelDeviceName,
-                SoundDeviceName = myj64Config.SoundDeviceName,
-                VcrPauseDeviceName = myj64Config.VcrPauseDeviceName,
-                VolumeDevice = myj64Config.VolumeDevice,
-            };
-
-            dvm.VolumeDeviceList = GetDeviceList(dvm.VolumeDevice);
-            dvm.ChannelDeviceList = GetDeviceList(dvm.ChannelDevice);
-
-            return View(dvm);
+            return View(CreateViewMode());
         }
 
         private List<SelectListItem> GetDeviceList(string selectectValue)
@@ -92,7 +78,26 @@ namespace j64.Harmony.WebApi.Controllers
         public IActionResult SyncSmartThings()
         {
             SmartThingsRepository.InstallDevices(myj64Config, Request.Host.Value);
-            return View("Index", myj64Config);
+            return View("Edit", CreateViewMode());
+        }
+        
+        private DeviceNamesViewModel CreateViewMode()
+        {
+            var dvm = new DeviceNamesViewModel()
+            {
+                ChanneKeyPauseInterval = myj64Config.ChanneKeyPauseInterval,
+                ChannelDevice = myj64Config.ChannelDevice,
+                ChannelSurfDeviceName = myj64Config.ChannelSurfDeviceName,
+                LastChannelDeviceName = myj64Config.LastChannelDeviceName,
+                SoundDeviceName = myj64Config.SoundDeviceName,
+                VcrPauseDeviceName = myj64Config.VcrPauseDeviceName,
+                VolumeDevice = myj64Config.VolumeDevice,
+            };
+
+            dvm.VolumeDeviceList = GetDeviceList(dvm.VolumeDevice);
+            dvm.ChannelDeviceList = GetDeviceList(dvm.ChannelDevice);
+            
+            return dvm;
         }
     }
 }

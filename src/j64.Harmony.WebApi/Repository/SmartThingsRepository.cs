@@ -67,11 +67,11 @@ namespace j64.Harmony.WebApi.Repository
             OauthInfo authInfo = OauthRepository.Get();
 
             // We can't sync if the IP has not yet been set
-            if (String.IsNullOrEmpty(j64Config.STHubAddress))
+            if (String.IsNullOrEmpty(j64Config.STHubAddress) || j64Config.STHubAddress.Contains("TBD"))
                 return;
 
             // Set the IP address of this server if it has not been set yet
-            if (String.IsNullOrEmpty(j64Config.j64Address))
+            if (String.IsNullOrEmpty(j64Config.j64Address) || j64Config.j64Address.Contains("TBD"))
                 SmartThingsRepository.Determinej64Address(host, j64Config);
                 
             var url = $"http://{j64Config.STHubAddress}:{j64Config.STHubPort}";
