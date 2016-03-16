@@ -25,6 +25,9 @@ namespace j64.Harmony.WebApi.Controllers
             if (myHub.hubConfig == null || String.IsNullOrEmpty(j64Config.ChannelDevice) || String.IsNullOrEmpty(j64Config.VolumeDevice))
                 return RedirectToAction("Edit", "FirstTimeConfig");
 
+            if (String.IsNullOrEmpty(OauthRepository.Get().accessToken))
+                return RedirectToAction("Index", "Oauth");
+
             List<FavoriteChannelViewModel> l = new List<FavoriteChannelViewModel>();
             j64Config.FavoriteChannels.ForEach(x => l.Add(new FavoriteChannelViewModel() { ChannelNumber = x.Channel, Name = x.Name }));
 

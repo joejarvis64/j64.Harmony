@@ -53,9 +53,9 @@ namespace j64.Harmony.WebApi.Controllers
                 j64HarmonyGatewayRepository.Save(hubConfig);
             }
 
-            // Redirect to the home page once we are done with first time configuration
+            // Redirect to the install smart apps page once we are done with this first time configuration
             if (ftcViewModel.IsConnected && !String.IsNullOrEmpty(ftcViewModel.VolumeDevice) && !String.IsNullOrEmpty(ftcViewModel.ChannelDevice))
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Oauth");
 
             return View(ftcModel());
         }

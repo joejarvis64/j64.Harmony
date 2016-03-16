@@ -25,6 +25,9 @@ namespace j64.Harmony.WebApi.Controllers
             if (myHub.hubConfig == null || String.IsNullOrEmpty(j64Config.ChannelDevice) || String.IsNullOrEmpty(j64Config.VolumeDevice))
                 return RedirectToAction("Edit", "FirstTimeConfig");
 
+            if (String.IsNullOrEmpty(OauthRepository.Get().accessToken))
+                return RedirectToAction("Index", "Oauth");
+
             return View(HnGModel());
         }
 

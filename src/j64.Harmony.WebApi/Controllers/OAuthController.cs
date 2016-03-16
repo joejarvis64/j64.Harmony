@@ -6,23 +6,29 @@ using Newtonsoft.Json;
 using Microsoft.AspNet.Hosting;
 using j64.Harmony.WebApi.Repository;
 using j64.Harmony.WebApi.ViewModels.Configure;
+using j64.Harmony.Xmpp;
 using System.Threading.Tasks;
 
 namespace j64.Harmony.WebApi.Controllers
 {
     public class OAuthController : Controller
     {
-        j64HarmonyGateway hubConfig;
+        j64HarmonyGateway j64Config;
         IHostingEnvironment myEnv;
+        Hub myHub;
 
-        public OAuthController(j64HarmonyGateway j64Config, IHostingEnvironment env)
+        public OAuthController(j64HarmonyGateway j64Config, Hub hub, IHostingEnvironment env)
         {
-            this.hubConfig = j64Config;
+            this.j64Config = j64Config;
             this.myEnv = env;
+            this.myHub = hub;
         }
 
         public IActionResult Index()
         {
+            if (myHub.hubConfig == null || String.IsNullOrEmpty(j64Config.ChannelDevice) || String.IsNullOrEmpty(j64Config.VolumeDevice))
+                return RedirectToAction("Edit", "FirstTimeConfig");
+
             var oauth = OauthRepository.Get();
             var ovm = new OauthViewModel()
             {
@@ -147,10 +153,10 @@ namespace j64.Harmony.WebApi.Controllers
             OauthRepository.Save(oai);
 
             // Prepare the smart app to be called from the local traffic
-            SmartThingsRepository.PrepTheInstall(hubConfig);
+            SmartThingsRepository.PrepTheInstall(j64Config);
 
             // Send all of the default devices to the smart app
-            SmartThingsRepository.InstallDevices(hubConfig, Request.Host.Value);
+            SmartThingsRepository.InstallDevices(j64Config, Request.Host.Value);
 
             // all done!
             return View(oai);

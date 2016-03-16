@@ -25,8 +25,12 @@ namespace j64.Harmony.WebApi.Repository
             else
             {
                 j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Fox and Friends", Channel = "1004" });
+                j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "One zero zero five", Channel = "1005" });
+                j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Ten Oh Eight", Channel = "1008" });
                 j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Eleven 20", Channel = "1120" });
+                j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "History Channel", Channel = "1256" });
                 j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Food Network", Channel = "1452" });
+                j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Show Time", Channel = "1852" });
                 Save(j64Config);
             }
 

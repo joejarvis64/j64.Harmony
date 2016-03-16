@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNet.Mvc;
 using j64.Harmony.WebApi.Models;
+using j64.Harmony.WebApi.Repository;
 using j64.Harmony.WebApi.ViewModels.Home;
 using j64.Harmony.Xmpp;
 
@@ -40,7 +41,10 @@ namespace j64.Harmony.WebApi.Controllers
         {
             // If not connected to the smart hub go to the configure page
             if (myHub.hubConfig == null || String.IsNullOrEmpty(j64Config.ChannelDevice) || String.IsNullOrEmpty(j64Config.VolumeDevice))
-                    return RedirectToAction("Edit", "FirstTimeConfig");
+                return RedirectToAction("Edit", "FirstTimeConfig");
+
+            if (String.IsNullOrEmpty(OauthRepository.Get().accessToken))
+                return RedirectToAction("Index", "Oauth");
 
             return View(myHomeViewModel);
         }
