@@ -26,10 +26,10 @@ metadata {
     tiles(scale: 2) {
     	multiAttributeTile(name:"switch", type: "lighting", width: 4, height: 2, canChangeIcon: true){
 			tileAttribute ("device.switch", key: "PRIMARY_CONTROL") {
-				attributeState "on", label:'${name}', action:"switch.off", icon:"st.Electronics.electronics12", backgroundColor:"#009933", nextState:"off"
-				attributeState "off", label:'${name}', action:"switch.on", icon:"st.Electronics.electronics12", backgroundColor:"#ffffff", nextState:"on"
-				attributeState "turningOn", label:'${name}', action:"switch.off", icon:"st.Electronics.electronics12", backgroundColor:"#009933", nextState:"turningOff"
-				attributeState "turningOff", label:'${name}', action:"switch.on", icon:"st.Electronics.electronics12", backgroundColor:"#ffffff", nextState:"turningOn"
+				attributeState "on", label:'Toggle Mute', action:"switch.off", icon:"st.Electronics.electronics12", backgroundColor:"#89c35c", nextState:"off"
+				attributeState "off", label:'Toggle Mute', action:"switch.on", icon:"st.Electronics.electronics12", backgroundColor:"#89c35c", nextState:"on"
+				attributeState "turningOn", label:'Toggling Mute', action:"switch.off", icon:"st.Electronics.electronics12", backgroundColor:"#89c35c", nextState:"turningOff"
+				attributeState "turningOff", label:'Toggling Mute', action:"switch.on", icon:"st.Electronics.electronics12", backgroundColor:"#89c35c", nextState:"turningOn"
 			}
 			tileAttribute ("device.level", key: "SLIDER_CONTROL") {
 				attributeState "level", action:"switch level.setLevel"
@@ -45,8 +45,8 @@ metadata {
         }
 
     	standardTile("switchMain", "device.switch", width: 2, height: 2, canChangeIcon: true) {
-            state "off", label: '${name}', action: "switch.on",  icon: "st.Electronics.electronics12-icn", backgroundColor: "#ffffff"
-            state "on", label:  '${name}', action: "switch.off", icon: "st.Electronics.electronics12-icn",  backgroundColor: "#009933"
+            state "on", label:  'Mute', action: "switch.off", icon: "st.Electronics.electronics12-icn",  backgroundColor: "#89c35c"
+            state "off", label: 'Mute', action: "switch.on",  icon: "st.Electronics.electronics12-icn", backgroundColor: "#89c35c"
         }
 
 	main "switchMain"

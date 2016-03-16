@@ -24,13 +24,13 @@ metadata {
 
     tiles {
         standardTile("switch", "device.switch", width: 3, height: 3, canChangeIcon: true) {
-            state "off", label: '${name}', action: "switch.on",  icon: "st.Electronics.electronics5", backgroundColor: "#ffffff"
-            state "on", label:  '${name}', action: "switch.off", icon: "st.Electronics.electronics5",  backgroundColor: "#009933"
+            state "off", label: 'Pause/Resume', action: "switch.on",  icon: "st.Electronics.electronics5", backgroundColor: "#c88141"
+            state "on", label:  'Pause/Resume', action: "switch.off", icon: "st.Electronics.electronics5",  backgroundColor: "#c88141"
         }
     
     	standardTile("switchMain", "device.switch", width: 2, height: 2, canChangeIcon: true) {
-            state "off", label: '${name}', action: "switch.on",  icon: "st.Electronics.electronics5-icn", backgroundColor: "#ffffff"
-            state "on", label:  '${name}', action: "switch.off", icon: "st.Electronics.electronics5-icn",  backgroundColor: "#009933"
+            state "off", label: 'Pause', action: "switch.on",  icon: "st.Electronics.electronics5-icn", backgroundColor: "#c88141"
+            state "on", label:  'Pause', action: "switch.off", icon: "st.Electronics.electronics5-icn",  backgroundColor: "#c88141"
         }
     
         main "switchMain"
