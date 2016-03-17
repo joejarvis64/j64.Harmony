@@ -1,0 +1,25 @@
+#!/bin/sh
+
+
+# Step 1 - run a restore on the Xmpp app
+echo "Running dnu restore for Xmpp"
+cd src/j64.Harmony.Xmpp
+dnu restore >restore.log
+if [ $? -ne 0 ]; then
+  echo "ERROR: could not run \"dnu restore\" for j64.Harmony.Xmpp.  Try to run it manually"
+  exit 1
+fi
+
+
+# Step 2 - run a restore on the WebApi app
+echo "Running dnu restore for WebApi"
+cd ../j64.Harmony.WebApi
+dnu restore >restore.log
+if [ $? -ne 0 ]; then
+  echo "ERROR: could not run \"dnu restore\" for j64.Harmony.WebApi.  Try to run it manually"
+  exit 1
+fi
+
+# Step 3 - run the web app
+cd .
+dnx web
