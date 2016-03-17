@@ -58,7 +58,7 @@ Application started. Press Ctrl+C to shut down.
 This means the web app is up, running and listeniong on port 2065.
 ```
 
-**Important**: if you are on windows and you get a message asking you to allow firewall access be sure to click allow access.  If you say no, the smart things hub will not be able to talk with the j64Harmony web app.
+Important: if you are on windows and you get a message asking you to allow firewall access be sure to click allow access.  If you say no, the smart things hub will not be able to talk with the j64Harmony web app.
 
 
 # Step 4 - Open the App
