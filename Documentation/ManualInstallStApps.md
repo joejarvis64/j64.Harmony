@@ -19,7 +19,7 @@ That will bring up the editor for the smart app.  At this point you will want to
 
  ![New Smart Apps Page](Images/NewSmartApp2.png "Publish Page")
 
-Now that you have published the app you will need to get an Oauth key that will be used down on step #9.  To do this click the "App Settings" button next the the publish button.  That will take you to the following page.  Open up the Oauth Section and click "Enable Oauth in Smart App" button. You will need the Oauth Client ID & Oauth Client Secret down in step #8.  
+Now that you have published the app you will need to get an Oauth key that will be used when authorizing your smart app.  To do this click the "App Settings" button next the the publish button.  That will take you to the following page.  Open up the Oauth Section and click "Enable Oauth in Smart App" button. You will need the Oauth Client ID & Oauth Client Secret down in step #8.  
 
 Be sure to click the Update button at the bottom of this page or it will not actually save that Oauth information.
 
