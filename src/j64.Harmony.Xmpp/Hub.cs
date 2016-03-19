@@ -136,6 +136,9 @@ namespace j64.Harmony.Xmpp
             // Turn the config into a strongly typed document
             string config = response.DocumentElement.FirstChild.NextSibling.InnerText;
             hubConfig = JsonConvert.DeserializeObject<HubConfig>(config);
+
+            // Save the config to a file for debugging purposes
+            File.WriteAllText("myHubConfig.json", JsonConvert.SerializeObject(hubConfig, Formatting.Indented));
         }
 
         public void SendCommand(string deviceName, string command, string status)

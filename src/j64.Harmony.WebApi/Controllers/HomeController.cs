@@ -65,7 +65,7 @@ namespace j64.Harmony.WebApi.Controllers
         [HttpGet("SetChannel/{channel}")]
         public IActionResult SetChannel(string channel)
         {
-            myHub.SendCommand(j64Config.ChannelDevice, "pause", "press");
+            myHub.ChangeChannel(channel, j64Config.ChannelDevice, j64Config.ChanneKeyPauseInterval);
             return View("Index", myHomeViewModel);
         }
 
