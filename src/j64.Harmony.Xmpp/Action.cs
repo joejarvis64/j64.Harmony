@@ -7,6 +7,7 @@ namespace j64.Harmony.Xmpp
 {
     public class Action
     {
+        // test comment
         public string command { get; set; }
         public string type { get; set; }
         public string deviceId { get; set; }
