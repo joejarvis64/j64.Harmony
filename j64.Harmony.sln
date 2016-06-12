@@ -17,6 +17,34 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "j64.Harmony.Xmpp", "src\j64
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "j64.Harmony.Web", "src\j64.Harmony.Web\j64.Harmony.Web.xproj", "{ED9303D1-8279-482D-ABF8-42C74AD5D65F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{B59AC693-6094-4E62-A1B8-59F7CB8D7BCE}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\GettingStarted.md = Documentation\GettingStarted.md
+		Documentation\ManualInstallStApps.md = Documentation\ManualInstallStApps.md
+		README.md = README.md
+		Documentation\ToDo.md = Documentation\ToDo.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{EE902F48-7465-47F6-8C5E-D7CB53CE54E4}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\Images\AlexaPhrases.png = Documentation\Images\AlexaPhrases.png
+		Documentation\Images\BuildSuccess.png = Documentation\Images\BuildSuccess.png
+		Documentation\Images\ChannelNames.png = Documentation\Images\ChannelNames.png
+		Documentation\Images\FavoriteChannels.png = Documentation\Images\FavoriteChannels.png
+		Documentation\Images\HarmonyHubInformation.png = Documentation\Images\HarmonyHubInformation.png
+		Documentation\Images\InstallSmartApp.png = Documentation\Images\InstallSmartApp.png
+		Documentation\Images\InstallSmartAppScreen1.png = Documentation\Images\InstallSmartAppScreen1.png
+		Documentation\Images\InstallSmartAppScreen2.png = Documentation\Images\InstallSmartAppScreen2.png
+		Documentation\Images\InstallSmartAppScreen3.png = Documentation\Images\InstallSmartAppScreen3.png
+		Documentation\Images\MobileAppThings.png = Documentation\Images\MobileAppThings.png
+		Documentation\Images\NewSmartApp1.png = Documentation\Images\NewSmartApp1.png
+		Documentation\Images\NewSmartApp2.png = Documentation\Images\NewSmartApp2.png
+		Documentation\Images\OauthExample.png = Documentation\Images\OauthExample.png
+		Documentation\Images\SmartAppPicture.png = Documentation\Images\SmartAppPicture.png
+		Documentation\Images\SrcDirectory.png = Documentation\Images\SrcDirectory.png
+		Documentation\Images\VolumeChannelDevice.png = Documentation\Images\VolumeChannelDevice.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,5 +66,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7A9D38E8-C292-4726-A631-E1B2A8BF98D3} = {25DBC641-A6CA-48A5-9DF5-166E3C62FEB1}
 		{ED9303D1-8279-482D-ABF8-42C74AD5D65F} = {25DBC641-A6CA-48A5-9DF5-166E3C62FEB1}
+		{EE902F48-7465-47F6-8C5E-D7CB53CE54E4} = {B59AC693-6094-4E62-A1B8-59F7CB8D7BCE}
 	EndGlobalSection
 EndGlobal

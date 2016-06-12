@@ -9,7 +9,7 @@
 # Overview of Steps
 Here are the abbreviated, one liner, list of install steps:
 
-1. Install asp.net framework (http://get.asp.net)
+1. Install the asp.net framework (https://www.microsoft.com/net/core))
 2. git clone https://github.com/joejarvis64/j64.Harmony.git
 3. run j64Start
 4. Launch a browser at http://localhost:2065 and configure the app
@@ -23,19 +23,17 @@ Here are the abbreviated, one liner, list of install steps:
 Start telling Alexa to control the volume and channels!
 
 # Step 1 - Install the Asp.Net Core Framework
-Go to http://get.asp.net and install a copy of the dot net core framework on the machine you will use to run j64HarmonyServer.  It is a pretty easy install process, just click the "Install for Mac" or "Install for Windows" button and run the executable that is downloaded.
+Go to https://www.microsoft.com/net/core and install a copy of the dot net core framework on the machine you will use to run j64HarmonyServer.  
+It is a pretty easy install process, just click the Platform you will install on (windows, mac, linux) and then follow the instructions it provides.
+There is no need to create the sample app they describe in the final steps.
 
-If you are installing on a windows machine you may need to take a couple of extra steps to get everything running properly.  In my case I had do this:
-
-1. Goto get.asp.net and click the Asp.Net RC 5 "Install for Windows" button and run the executable that it downloads
-2. Reboot windows so the environment will be set properly
-3. After restarting, open a command prompt and run the upgrade command to get the runtime, dnx and dnu utilities installed properly:
-```
-dnvm upgrade -r coreclr 
-```
+If you have previously installed the RC1 version of the framework you may need to uninstall what you already have on your machine.  I did not have
+to do that but if you are having issues running the app you should try that first.
 
 # Step 2 - Download a copy of the j64.Harmony
-I do not have a installer package yet so you will need to download and install it manually.  You will need to be familiar with github to do this.  The easiest way is to clone a copy of the repository into a directory on your machine.  There is also an option to download a zip file from there at which you would just unzip it onto your local machine.  The github repository for j64Harmony is located here: https://github.com/joejarvis64/j64.Harmony.git
+I do not have a installer package yet so you will need to download and install it manually.  You will need to be familiar with github to do this.  
+The easiest way is to clone a copy of the repository into a directory on your machine.  There is also an option to download a zip file from there 
+at which you would just unzip it onto your local machine.  The github repository for j64Harmony is located here: https://github.com/joejarvis64/j64.Harmony.git
 
 # Step 3 - Start up the j64Harmony  App
 Start up a terminal session or command prompt if you are in windows and run the following commands:
@@ -49,15 +47,21 @@ NOTE: If you are on windows just type in "j64Start" without the ./ at the front
 
 
 
-Once the app starts up you should see a message like this on the terminal:
+Once the app starts you will see a bunch of messages and then the final lines 
+should look something like this:
 ```
 Hosting environment: Production
 Now listening on: http://0.0.0.0:2065
 Application started. Press Ctrl+C to shut down.
 ```
-This means the web app is up, running and listening on port 2065.
+This means the web app is up, running and listening on port 2065.  You need to leave this app running on your machine so it can forward commands
+over to the smart things hub.
 
-Important: if you are on windows and you get a message asking you to allow firewall access be sure to click allow access.  If you say no, the smart things hub will not be able to talk with the j64Harmony web app.
+Important: if you are on windows and you get a message asking you to allow firewall access be sure to click allow access.  If you say no, the smart 
+things hub will not be able to talk with the j64Harmony web app.  
+
+Important: If you are running this inside a virtual machine make sure that your virtual machine has its own IP address and is not sharing with the 
+host machine.  If not, smartthings will not be able to communicate with it.
 
 
 # Step 4 - Open the App
