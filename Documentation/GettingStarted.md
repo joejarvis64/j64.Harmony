@@ -9,7 +9,7 @@
 # Overview of Steps
 Here are the abbreviated, one liner, list of install steps:
 
-1. Install the asp.net framework (https://www.microsoft.com/net/core))
+1. Install the asp.net framework (https://www.microsoft.com/net/core)
 2. git clone https://github.com/joejarvis64/j64.Harmony.git
 3. run j64Start
 4. Launch a browser at http://localhost:2065 and configure the app
