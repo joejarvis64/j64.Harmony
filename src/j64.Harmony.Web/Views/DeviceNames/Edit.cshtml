@@ -1,0 +1,65 @@
+﻿@model j64.Harmony.Web.ViewModels.Configure.DeviceNamesViewModel
+@{
+    ViewData["Title"] = "Device Names";
+}
+<form class="form" asp-action="Edit">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Harmony Devices to Use
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="VolumeDevice">Device used to control volume</label>
+                <select class="form-control" asp-for="VolumeDevice" asp-items="Model.VolumeDeviceList" ></select>
+                <span asp-validation-for="VolumeDevice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChannelDevice">Device used to change channels</label>
+                <select class="form-control" asp-for="ChannelDevice" asp-items="Model.ChannelDeviceList"></select>
+                <span asp-validation-for="ChannelDevice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChanneKeyPauseInterval">Channel Key Press Wait(ms)</label>
+                <input class="form-control" asp-for="ChanneKeyPauseInterval" type="number" />
+                <span asp-validation-for="ChanneKeyPauseInterval" class="text-danger"></span>
+                <div class="myNotes">** If numbers are not being sent, try increasing this wait time</div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Devices & Names</button>
+    <a class="btn btn-primary btn-sm" asp-action="SyncSmartThings"><i class="fa fa-floppy-o"></i>&nbsp;Resync with SmartThings</a>
+    <br />
+    <br/>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Names recognized by Alexa
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="SoundDeviceName">Volume Device Name</label>
+                <input class="form-control" asp-for="SoundDeviceName" />
+                <span asp-validation-for="SoundDeviceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VcrPauseDeviceName">Pause TV Device Name</label>
+                <input class="form-control" asp-for="VcrPauseDeviceName" />
+                <span asp-validation-for="VcrPauseDeviceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastChannelDeviceName">Last Channel Device Name</label>
+                <input class="form-control" asp-for="LastChannelDeviceName" />
+                <span asp-validation-for="LastChannelDeviceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChannelSurfDeviceName">Channel Surfing Device Name</label>
+                <input class="form-control" asp-for="ChannelSurfDeviceName" />
+                <span asp-validation-for="ChannelSurfDeviceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="myNotes">** After modifying the device names you must ask Alexa to discover devices</div>
+                <div class="myNotes">** After modifying the device names you must resync with SmartThings</div>
+            </div>
+        </div>
+    </div>
+</form>

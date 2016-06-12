@@ -1,0 +1,28 @@
+﻿@model j64.Harmony.Web.ViewModels.Configure.FavoriteChannelViewModel
+@{
+    ViewData["Title"] = "Device Names";
+}
+<form class="form" asp-action="Create">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Channel Information
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="ChannelNumber"></label>
+                <input class="form-control" asp-for="ChannelNumber" type="number" placeholder="Channel Number" />
+                <span asp-validation-for="ChannelNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input class="form-control" asp-for="Name" placeholder="Channel Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br/>
+                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Channel</button><br /><br />
+            </div>
+        </div>
+    </div>
+</form>

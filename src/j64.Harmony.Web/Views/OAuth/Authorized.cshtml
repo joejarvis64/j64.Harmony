@@ -1,0 +1,29 @@
+﻿@model j64.Harmony.Web.Models.OauthInfo
+@{
+    ViewData["Title"] = "Authorized Page";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">  
+        OAuth Results
+    </div>
+    <div class="panel-body">
+        @if (ViewData["GetTokenError"] != null)
+        {
+                <i class='fa fa-exclamation-triangle' style='color:red'></i>
+            <p>
+                Something went wrong during the authorization process and an access token was not received.  <br/>
+                The HTTP Error was: @ViewData["GetTokenError"]
+            </p>
+        }
+        else
+        {
+            <i class="fa fa-check-circle" style='color:green'></i>
+            <p>Your app was successfully authorized and an access token has been saved to your SmartThing.json config file.  
+            Your harmony system will now start synchronizing with the smart thing devices.</p>
+            <p>If you do not see any of the volume or channel devices appear in smart things, there may have been an 
+               issue determining the smart things hub ip address.  You can set it manually on the home page.</p>
+        }
+    </div>
+</div>
+
