@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.XPath;
 using Newtonsoft.Json;
 
 namespace j64.Harmony.Xmpp
@@ -331,7 +330,7 @@ namespace j64.Harmony.Xmpp
                     // Clean up anything that is outstanding
                     if (_client != null)
                     {
-                        _client.Client.Shutdown(SocketShutdown.Both);
+                        //_client.Client.Shutdown(SocketShutdown.Both);
                         _client.Dispose();
                     }
 

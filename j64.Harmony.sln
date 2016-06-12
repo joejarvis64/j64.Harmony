@@ -1,18 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{25DBC641-A6CA-48A5-9DF5-166E3C62FEB1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4034ECFD-2AD8-431C-99F1-C63480DBB0C9}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
+		j64Start = j64Start
+		j64Start.cmd = j64Start.cmd
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "j64.Harmony.Xmpp", "src\j64.Harmony.Xmpp\j64.Harmony.Xmpp.xproj", "{7A9D38E8-C292-4726-A631-E1B2A8BF98D3}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "j64.Harmony.WebApi", "src\j64.Harmony.WebApi\j64.Harmony.WebApi.xproj", "{B27F5B39-9365-4AB8-9220-CCE2734CAD3A}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "j64.Harmony.Web", "src\j64.Harmony.Web\j64.Harmony.Web.xproj", "{ED9303D1-8279-482D-ABF8-42C74AD5D65F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,16 +27,16 @@ Global
 		{7A9D38E8-C292-4726-A631-E1B2A8BF98D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A9D38E8-C292-4726-A631-E1B2A8BF98D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A9D38E8-C292-4726-A631-E1B2A8BF98D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B27F5B39-9365-4AB8-9220-CCE2734CAD3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B27F5B39-9365-4AB8-9220-CCE2734CAD3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B27F5B39-9365-4AB8-9220-CCE2734CAD3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B27F5B39-9365-4AB8-9220-CCE2734CAD3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED9303D1-8279-482D-ABF8-42C74AD5D65F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED9303D1-8279-482D-ABF8-42C74AD5D65F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED9303D1-8279-482D-ABF8-42C74AD5D65F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED9303D1-8279-482D-ABF8-42C74AD5D65F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7A9D38E8-C292-4726-A631-E1B2A8BF98D3} = {25DBC641-A6CA-48A5-9DF5-166E3C62FEB1}
-		{B27F5B39-9365-4AB8-9220-CCE2734CAD3A} = {25DBC641-A6CA-48A5-9DF5-166E3C62FEB1}
+		{ED9303D1-8279-482D-ABF8-42C74AD5D65F} = {25DBC641-A6CA-48A5-9DF5-166E3C62FEB1}
 	EndGlobalSection
 EndGlobal

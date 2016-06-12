@@ -1,0 +1,38 @@
+﻿@model List<j64.Harmony.Web.ViewModels.Configure.FavoriteChannelViewModel>
+@{
+    ViewData["Title"] = "Favorite Channels";
+}
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Favorite Channels
+        <div class="pull-right"><a title="Add new favorite" asp-action="Create"><small>new</small> <i class="fa fa-plus"></i></a></div>
+    </div>
+    <table class="table table-hover">
+        <tbody>
+            @foreach (var fc in Model)
+            {
+                <tr>
+                    <td style="width:10%;">@fc.ChannelNumber</td>
+                    <td>@fc.Name</td>
+                    <td align="right" style="white-space: nowrap;">
+                        <form asp-action="Delete">
+                            <a asp-action="Edit" asp-route-channel="@fc.ChannelNumber" title="Edit Channel"><i class="fa fa-pencil-square-o fa-fw"></i></a>
+                            <a onclick="javascript: $(this).closest('form').submit();" title="Delete"><i class="fa fa-trash fa-fw"></i></a>
+                            <input type="text" class="hidden" value="@fc.ChannelNumber" name="channel" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                    <div class="myNotes">** After modifying the channels you must ask Alexa to discover devices</div>
+                    <div class="myNotes">** After modifying the device names you must resync with SmartThings</div>
+                </td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

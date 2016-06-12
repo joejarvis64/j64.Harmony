@@ -1,0 +1,99 @@
+﻿@model j64.Harmony.Web.ViewModels.Home.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<form class="form" asp-controller="Home" asp-action="SaveChanges" method="post">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Alexa phrases
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><b><i>Say this...</i></b></th>
+                        <th><b>To do this</b></th>
+                        <th><b>Try&nbsp;it</b></th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td class="sayThis">Alexa, turn on/off [@Model.SoundDeviceName]</td>
+                    <td class="toDoThis">Toggle mute</td>
+                    <td><a class="btn btn-default btn-xs" asp-action="Mute"><i class="fa fa-volume-off fa-fw"></i></a></td>
+                </tr>
+                <tr>
+                    <td class="sayThis">
+                        Alexa, set [@Model.SoundDeviceName] to 60%
+                    </td>
+                    <td class="toDoThis">
+                        Turn up the sound by 2 clicks
+                    </td>
+                    <td>
+                        <a class="btn btn-default btn-xs" asp-action="VolumeLevel" asp-route-level="60"><i class="fa fa-volume-up fa-fw"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sayThis">
+                        Alexa, set [@Model.SoundDeviceName] to 40%
+                    </td>
+                    <td class="toDoThis">
+                        Turn down the sound by 2 clicks
+                    </td>
+                    <td>
+                        <a class="btn btn-default btn-xs" asp-action="VolumeLevel" asp-route-level="40"><i class="fa fa-volume-down fa-fw"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="sayThis">Alexa, turn on [@Model.ChannelSurfDeviceName]</td>
+                    <td class="toDoThis">Start surfing channels!</td>
+                    <td><a class="btn btn-default btn-xs" asp-action="StartSurf"><i class="fa fa-spinner fa-fw"></i></a></td>
+                </tr>
+                <tr>
+                    <td class="sayThis">Alexa, turn off [@Model.ChannelSurfDeviceName]</td>
+                    <td class="toDoThis">Stop surfing channels</td>
+                    <td><a class="btn btn-default btn-xs" asp-action="StopSurf"><i class="fa fa-cog fa-fw"></i></a></td>
+                </tr>
+                <tr>
+                    <td class="sayThis">Alexa, turn on/off [@Model.VcrPauseDeviceName]</td>
+                    <td class="toDoThis">Toggle play/pause button on DVR</td>
+                    <td><a class="btn btn-default btn-xs" asp-action="Transport" asp-route-command="pause"><i class="fa fa-pause fa-fw"></i></a></td>
+                </tr>
+                <tr>
+                    <td class="sayThis">Alexa, turn on/off [@Model.LastChannelDeviceName]</td>
+                    <td class="toDoThis">Change to previous channel</td>
+                    <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="Previous"><i class="fa fa-refresh fa-fw"></i></a></td>
+                </tr>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <div class="myNotes">** The <span style='color:darkred'>[@Model.VolumeDevice]</span> is configured to control the volume</div>
+                            <div class="myNotes">** The <span style='color:darkred'>[@Model.ChannelDevice]</span> is configured to control the channels</div>
+                            <div class="myNotes">** Volume moves up/down by 2 button presses</div>
+                            <div class="myNotes">** Volume is not a true % of your TV volume</div>
+                            <div class="myNotes">** j64Harmony will surf only the channels you have defined below</div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><b><i>Say this...</i></b></th>
+                        <th><b>To set this channel</b></th>
+                        <th><b>Try&nbsp;it</b></th>
+                    </tr>
+                </thead>
+
+                @foreach (var fc in Model.FavoriteChannels)
+                {
+                    <tr>
+                        <td class="sayThis">Alexa, turn on [@fc.Name]</td>
+                        <td class="toDoThis">[@fc.Channel]</td>
+                        <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="SetChannel" asp-route-channel="@fc.Channel"><i class="fa fa-hand-o-left fa-fw"></i></a></td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</form>
