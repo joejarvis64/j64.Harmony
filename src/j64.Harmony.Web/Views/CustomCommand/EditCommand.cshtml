@@ -1,0 +1,21 @@
+﻿@model j64.Harmony.Web.ViewModels.Configure.CustomCommandViewModel
+@{
+    ViewData["Title"] = "Custom Command";
+}
+<form class="form" asp-action="EditCommand">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Command Information
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label asp-for="CommandName"></label>
+                <input class="form-control" asp-for="CommandName" placeholder="Command Name" />
+                <span asp-validation-for="CommandName" class="text-danger"></span>
+            </div>
+            <input asp-for="OriginalCommandName" style="visibility: hidden" />
+            <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-floppy-o"></i>&nbsp;Save Command</button><br /><br />
+        </div>
+    </div>
+</form>

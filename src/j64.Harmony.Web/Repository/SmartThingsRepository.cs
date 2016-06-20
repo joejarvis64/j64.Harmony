@@ -89,6 +89,9 @@ namespace j64.Harmony.Web.Repository
                 l.Add(new j64Device() { Name = fc.Name, DeviceValue = fc.Channel.ToString(), DeviceType = j64DeviceType.Channel });
             l.Add(new j64Device() { Name = j64Config.LastChannelDeviceName, DeviceValue = "previous", DeviceType = j64DeviceType.Channel });
 
+            foreach (var cc in j64Config.CustomCommands)
+                l.Add(new j64Device() { Name = cc.CommandName, DeviceValue = cc.CommandName, DeviceType = j64DeviceType.CustomCommand });
+            
             var request = new MyRequest<List<j64Device>>()
             {
                 j64Ip = j64Config.j64Address,

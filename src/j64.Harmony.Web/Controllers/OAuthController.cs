@@ -57,6 +57,7 @@ namespace j64.Harmony.Web.Controllers
             var ss = new DeviceTypeRepository(conn, "j64 Surfing Switch", $"{myEnv.WebRootPath}/../SmartThingApps/j64SurfingSwitchDevice.groovy");
             var vs = new DeviceTypeRepository(conn, "j64 VCR Switch", $"{myEnv.WebRootPath}/../SmartThingApps/j64VcrSwitchDevice.groovy");
             var os = new DeviceTypeRepository(conn, "j64 Volume Switch", $"{myEnv.WebRootPath}/../SmartThingApps/j64VolumeSwitchDevice.groovy");
+            var cc = new DeviceTypeRepository(conn, "j64 Custom Command Switch", $"{myEnv.WebRootPath}/../SmartThingApps/j64CustomCommandSwitchDevice.groovy");
 
             var har = new SmartAppRepository(conn, "j64 Harmony", $"{myEnv.WebRootPath}/../SmartThingApps/j64HarmonySmartApp.groovy");
 

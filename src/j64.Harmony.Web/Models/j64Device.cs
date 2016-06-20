@@ -18,6 +18,7 @@ namespace j64.Harmony.Web.Models
         Volume,
         Surfing,
         Channel,
-        VCR
+        VCR,
+        CustomCommand
     }
 }

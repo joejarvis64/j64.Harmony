@@ -56,5 +56,23 @@ namespace j64.Harmony.Web.Controllers
 
             return new ObjectResult($"Surfing {startStop}");
         }
+
+        [HttpGet("CustomCommand/{command}")]
+        public IActionResult CustomCommand(string command)
+        {
+            var customCommand = j64Config.CustomCommands.Find(x => x.CommandName == command.Replace("+"," "));
+            if (customCommand == null)
+                return new ObjectResult("custom command was not found");
+
+            int pause = 0;
+            foreach (var action in customCommand.Actions)
+            {
+                System.Threading.Thread.Sleep(pause);
+                myHub.SendCommand(action.Device, action.Function, action.Command);
+                pause = j64Config.ChanneKeyPauseInterval;
+            }
+
+            return new ObjectResult("custom command has been set");
+        }
     }
 }

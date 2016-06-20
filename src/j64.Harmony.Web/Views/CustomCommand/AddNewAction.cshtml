@@ -1,0 +1,50 @@
+﻿@model j64.Harmony.Web.ViewModels.Configure.CustomActionViewModel
+@{
+    ViewData["Title"] = "Custom Actions";
+}
+<form class="form" asp-action="AddNewAction">
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Select an Action
+        </div>
+        <div class="panel-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>Group</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                @foreach (var d in Model.Devices.OrderBy(x => x.label))
+                {
+                    <tr>
+                        <td colspan="4" style="background-color:cornflowerblue; line-height:4px;">&nbsp;</td>
+                    </tr>
+                    var device = @d.label;
+                    foreach (var g in d.controlGroup.OrderBy(x => x.name))
+                    {
+                        var group = @g.name;
+                        foreach (var f in g.function.OrderBy(x => x.label))
+                        {
+                            <tr>
+                                <td>@device</td>
+                                <td>@group</td>
+                                <td>@f.label</td>
+                                <td>
+                                    <a asp-action="SelectNewAction" asp-route-command="@Model.Command" asp-route-sequence="@Model.Sequence" asp-route-device="@d.label" asp-route-group="@g.name" asp-route-function="@f.label">Select</a>
+                                </td>
+                            </tr>
+                            device = null;
+                            group = null;
+                        }
+                        <tr>
+                            <td colspan="4" style="background-color:white;line-height:8px;">&nbsp;</td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</form>

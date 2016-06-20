@@ -31,6 +31,38 @@ namespace j64.Harmony.Web.Repository
                 j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "History Channel", Channel = "1256" });
                 j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Food Network", Channel = "1452" });
                 j64Config.FavoriteChannels.Add(new FavoriteChannel() { Name = "Show Time", Channel = "1852" });
+
+                var cc = new CustomCommand()
+                {
+                    CommandName = "Command 1"
+                };
+                cc.Actions.Add(new CustomAction()
+                {
+                    Sequence = 1,
+                    Device = "Samsung Amp",
+                    Group = "Volume",
+                    Function = "mute",
+                    Command = "press"
+                });
+                cc.Actions.Add(new CustomAction()
+                {
+                    Sequence = 2,
+                    Device = "Samsung Amp",
+                    Group = "Volume",
+                    Function = "VolumeUp",
+                    Command = "press"
+                });
+                cc.Actions.Add(new CustomAction()
+                {
+                    Sequence = 3,
+                    Device = "Samsung Amp",
+                    Group = "Volume",
+                    Function = "VolumeUp",
+                    Command = "press"
+                });
+
+                j64Config.CustomCommands.Add(cc);
+
                 Save(j64Config);
             }
 

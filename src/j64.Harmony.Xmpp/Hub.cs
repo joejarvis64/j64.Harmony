@@ -133,7 +133,14 @@ namespace j64.Harmony.Xmpp
             var response = SendReceiveSocketData(iqCmd, 2);
 
             // Turn the config into a strongly typed document
-            string config = response.DocumentElement.FirstChild.NextSibling.InnerText;
+            string config = response.DocumentElement.FirstChild?.NextSibling?.InnerText;
+            if (config == null)
+            {
+                config = File.ReadAllText("myHubConfig.json");
+                if (config == null)
+                    throw new Exception("Could not get config from the harmony hub.  Consider power cycling the hub.");
+            }
+
             hubConfig = JsonConvert.DeserializeObject<HubConfig>(config);
 
             // Save the config to a file for debugging purposes

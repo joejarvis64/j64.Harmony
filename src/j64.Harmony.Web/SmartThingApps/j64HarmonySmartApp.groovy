@@ -89,6 +89,11 @@ def installAllDevices(j64Devices) {
         	dt = "j64 VCR Switch"
             ni = "j64HarmonyVcr-${j64d.DeviceValue}"
         }
+        
+        if (j64d.DeviceType == 4) {
+        	dt = "j64 Custom Command Switch"
+            ni = "j64HarmonyCommand-${j64d.DeviceValue}"
+        }
        	AddDevice(ni, j64d.Name, dt, children) 
     }
     
@@ -101,6 +106,7 @@ def installAllDevices(j64Devices) {
                     if (j64d.DeviceType == 1) { ni = "j64HarmonySurfing" }
                     if (j64d.DeviceType == 2) { ni = "j64HarmonyChannel-${j64d.DeviceValue}" }
                     if (j64d.DeviceType == 3) { ni = "j64HarmonyVcr-${j64d.DeviceValue}" }
+                    if (j64d.DeviceType == 4) { ni = "j64HarmonyCommand-${j64d.DeviceValue}" }
 			        
                     ni == c.device.deviceNetworkId }
                     
@@ -158,6 +164,10 @@ def ChannelSurfOn() {
 
 def ChannelSurfOff() {
 	hubApiGet("/api/HarmonyHub/ChannelSurf/Stop")
+}
+
+def RunCommand(command) {
+	hubApiGet("/api/HarmonyHub/CustomCommand/${command}")
 }
 
 /* ************** */

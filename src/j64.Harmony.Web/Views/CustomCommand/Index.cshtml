@@ -1,0 +1,67 @@
+﻿@model List<j64.Harmony.Web.ViewModels.Configure.CustomCommandViewModel>
+@{
+    ViewData["Title"] = "Custom Commands";
+}
+<br />
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Custom Commands
+        <div class="pull-right"><a title="Add new command" asp-action="CreateCommand"><small>add new command</small> <i class="fa fa-plus"></i></a></div>
+    </div>
+    <table class="table table-hover">
+        <tbody>
+            @foreach (var cc in Model)
+            {
+                <tr>
+                    <td style="width:1%; white-space: nowrap">@cc.CommandName</td>
+                    <td>
+                        <br />
+                        <table>
+                            @foreach (var cmd in cc.commands)
+                            {
+                                <tr>
+                                    <td style="white-space: nowrap; padding-right: 10px;">@cmd.Device</td>
+                                    <td style="white-space: nowrap; padding-right: 10px;">@cmd.ControlGroup</td>
+                                    <td style="white-space: nowrap; padding-right: 10px;">@cmd.Function</td>
+                                    <td>
+                                        <a asp-action="MoveActionUp" asp-route-command="@cc.CommandName" asp-route-sequence="@cmd.Sequence" title="Move Action Up"><i class="fa fa-arrow-circle-o-up fa-fw"></i></a>
+                                        <a asp-action="AddNewAction" asp-route-command="@cc.CommandName" asp-route-sequence="@cmd.Sequence" title="Add new Action"><i class="fa fa-plus"></i></a>
+                                        <a asp-action="DeleteAction" asp-route-command="@cc.CommandName" asp-route-sequence="@cmd.Sequence" title="Delete Action"><i class="fa fa-trash fa-fw"></i></a>
+                                    </td>
+                                </tr>
+                            }
+
+                            @if (cc.commands.Count == 0)
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-action="AddNewAction" asp-route-command="@cc.CommandName" asp-route-sequence="0" title="Add new Action"><small>add new key press</small> <i class="fa fa-plus"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+
+                    </td>
+                    <td style="width:2%;white-space: nowrap;" align="right">
+                        <a asp-action="EditCommand" asp-route-command="@cc.CommandName" title="Edit Command"><i class="fa fa-pencil-square-o fa-fw"></i></a>
+                        <a asp-action="DeleteCommand" asp-route-command="@cc.CommandName" title="Delect Command"><i class="fa fa-trash fa-fw"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                    <div class="myNotes">** After modifying any of the commands you must ask Alexa to discover devices</div>
+                    <div class="myNotes">** After modifying any of the commands you must resync with SmartThings</div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <a class="btn btn-primary btn-sm" asp-action="SyncSmartThings"><i class="fa fa-floppy-o"></i>&nbsp;Resync with SmartThings</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
