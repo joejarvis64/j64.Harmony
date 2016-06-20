@@ -27,6 +27,7 @@ namespace j64.Harmony.Web.Controllers
                     VolumeDevice = j64Config.VolumeDevice
                 };
                 j64Config.FavoriteChannels.ForEach(x => hvm.FavoriteChannels.Add(new Web.ViewModels.Home.FavoriteChannel() { Channel = x.Channel, Name = x.Name }));
+                j64Config.CustomCommands.ForEach(x => hvm.CustomCommands.Add(new ViewModels.Home.CustomCommand() { Name = x.CommandName, NumKeyPresses = x.Actions.Count }));
                 return hvm;
             }
         }
@@ -85,6 +86,23 @@ namespace j64.Harmony.Web.Controllers
         public IActionResult StopSurf()
         {
             myHub.StopChannelSurf();
+            return View("Index", myHomeViewModel);
+        }
+
+        public IActionResult CustomCommand(string command)
+        {
+            var customCommand = j64Config.CustomCommands.Find(x => x.CommandName == command.Replace("+", " "));
+            if (customCommand == null)
+                throw new Exception("Invalid command");
+
+            int pause = 0;
+            foreach (var action in customCommand.Actions)
+            {
+                System.Threading.Thread.Sleep(pause);
+                myHub.SendCommand(action.Device, action.Function, action.Command);
+                pause = j64Config.ChanneKeyPauseInterval;
+            }
+
             return View("Index", myHomeViewModel);
         }
     }

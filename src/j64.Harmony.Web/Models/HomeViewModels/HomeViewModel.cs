@@ -18,11 +18,19 @@ namespace j64.Harmony.Web.ViewModels.Home
         public string ChannelDevice { get; set; } = "";
 
         public List<FavoriteChannel> FavoriteChannels = new List<FavoriteChannel>();
+
+        public List<CustomCommand> CustomCommands = new List<CustomCommand>();
     }
 
     public class FavoriteChannel
     {
         public string Name { get; set; }
         public string Channel { get; set; }
+    }
+
+    public class CustomCommand
+    {
+        public string Name { get; set; }
+        public int NumKeyPresses { get; set; }
     }
 }

@@ -94,6 +94,24 @@
                     </tr>
                 }
             </table>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><b><i>Say this Custom Command...</i></b></th>
+                        <th><b>To do this many key presses...</b></th>
+                        <th><b>Try&nbsp;it</b></th>
+                    </tr>
+                </thead>
+
+                @foreach (var cc in Model.CustomCommands)
+                {
+                    <tr>
+                        <td class="sayThis">Alexa, turn on [@cc.Name]</td>
+                        <td class="toDoThis">[@cc.NumKeyPresses]</td>
+                        <td class="tryIt"><a class="btn btn-default btn-xs" asp-action="CustomCommand" asp-route-command="@cc.Name"><i class="fa fa-hand-o-left fa-fw"></i></a></td>
+                    </tr>
+                }
+            </table>
         </div>
     </div>
 </form>
