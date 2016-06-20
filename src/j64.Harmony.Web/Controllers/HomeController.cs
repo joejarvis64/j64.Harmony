@@ -100,6 +100,11 @@ namespace j64.Harmony.Web.Controllers
             {
                 System.Threading.Thread.Sleep(pause);
                 myHub.SendCommand(action.Device, action.Function, action.Command);
+
+                // Send a release just in case!
+                System.Threading.Thread.Sleep(100);
+                myHub.SendCommand(action.Device, action.Function, "release");
+
                 pause = j64Config.ChanneKeyPauseInterval;
             }
 
