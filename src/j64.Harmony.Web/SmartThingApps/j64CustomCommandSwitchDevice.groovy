@@ -55,5 +55,6 @@ def off() {
 def changeChannel() {
 	def command = device.deviceNetworkId.replaceAll("j64HarmonyCommand-","")
 	log.debug "Custom command ${command}"
+    command = URLEncoder.encode(command)
 	parent.RunCommand(command)
 }
